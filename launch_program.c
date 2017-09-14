@@ -15,8 +15,11 @@ int     try_launch_path(char **args, char **envp)
     // Join the path with the name of the program
     //printf("Attempting to launch [%s], at %s\n", args[0], full_name);
 
-    if ((execve(full_name, args, envp) == -1))
-        printf("error forking \n");
+    	if ((execve(full_name, args, envp) == -1))
+	{
+        	printf("error forking \n");
+		exit(0);	
+	}
 }
 
 int     launch_program(char **args, char **envp)

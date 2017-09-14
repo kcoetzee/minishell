@@ -46,7 +46,8 @@ void    process_input(char **envp, char *input)
     else if (ft_strequ(args[0], "exit"))
         run_builtin_exit(args, envp);
     else
-        ft_putstr("The program you are looking for does not exist.\n");
+	launch_program(args, envp);
+        //ft_putstr("The program you are looking for does not exist.\n");
 }
 
 void    input_loop(char **argv, char **envp)
@@ -73,10 +74,32 @@ void    test_builtin_echo(char **envp)
     launch_program(argv, envp);
 }
 
+int	test_vaughan_code(int argc, char **argv, char **envp)
+{
+	
+		int		i;
+		t_env	*list;
+
+		i = -1;
+		if (argc < 3)
+			return (0);
+		list = ft_load_list(envp);
+		list = ft_set_env(argv[1], argv[2], list);
+		//list = ft_unset_env(argv[1], list);
+		
+		envp = list_to_arr(list);
+		/* 
+		while(list->next != NULL)
+		{
+			printf("%d: %s\n", ++i, list->str);
+			list = list->next;
+		}*/
+		debug_print_env(envp);	
+		return(0);
+}
+
 int		main(int argc, char **argv, char *envp[])
 {
-    int i = 0;
-	//test_builtin_echo(envp);
-    //launch_program(argv, envp);
-    input_loop(argv, envp);
+	//test_vaughan_code(argc, argv, envp);	
+	input_loop(argv, envp);
 }
