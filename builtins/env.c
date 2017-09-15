@@ -2,5 +2,5 @@
 
 void    run_builtin_env(char **argv, char **envp)
 {
-    debug("running run_builtin_env");
+	debug_print_env(envp);
 }

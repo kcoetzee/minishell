@@ -3,8 +3,14 @@
 
 void    run_builtin_echo(char **argv, char **envp)
 {
-    //debug("running run_builtin_echo");   
-    //launch_program(argv, envp);
+	int i;
 
-    printf("%s\n", argv[0]);
+	i = 1;
+	while (argv[i])
+	{
+		ft_putstr(argv[i]);
+		ft_putchar(' ');
+		i++;
+	}
+	ft_putchar('\n');
 }

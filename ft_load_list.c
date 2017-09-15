@@ -29,5 +29,6 @@ t_env	*ft_load_list(char **env)
 			list = list->next;
 			i++;
 		}
+		list = NULL;
 		return (begin);
 }

@@ -45,8 +45,8 @@ char	**list_to_arr(t_env *list)
 		i++;
 		list = list->next;
 	}
-	while (arr[++j])
-		printf("%d: %s\n", j, arr[j]);
+	//while (arr[++j])
+	//	printf("%d: %s\n", j, arr[j]);
 	return(arr);
 }		
 

@@ -70,14 +70,12 @@ void	change_env(char *name, char *value, char **envp)
 	}
 }
 
-void    run_builtin_setenv(char **argv, char **envp)
+void	run_builtin_setenv(char **argv, char ***envp)
 {
-	debug("running run_builtin_setenv");
-	
-	printf("============== ENV BEFORE COPY =================== \n");
-	char **new_env = copy_env(new_env, envp);
-	debug_print_env(new_env);
-	printf("============== ENV COPY =================== \n");
-	debug_print_env(new_env);
-	//change_env(argv[1], argv[2], envp);
+	char *result;
+	t_env *list;
+
+	list = ft_load_list(*envp);
+	list = ft_set_env(argv[1], argv[2], list);
+	*envp = list_to_arr(list);
 }

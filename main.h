@@ -24,15 +24,21 @@ int	get_next_line(const int fd, char **line);
 int     launch_program(char **args, char **envp);
 char	*ft_addchar(char *str, char c);
 char	**list_to_arr(t_env *list);
+char	*ft_get_env(char *key, t_env *list);
+int	pos_equal(char *str);
+
 
 // builtin programs
 void    run_builtin_echo(char **args, char **envp);
 void    run_builtin_cd(char **args, char **envp);
-void    run_builtin_setenv(char **args, char **envp);
-void    run_builtin_unsetenv(char **args, char **envp);
+void    run_builtin_setenv(char **args, char ***envp);
+void    run_builtin_unsetenv(char **args, char ***envp);
 void    run_builtin_env(char **args, char **envp);
 void    run_builtin_exit(char **args, char **envp);
 
+
+char	*ft_strtrim_delim(char const *s, char delim);
+char	*remove_quotes(char *str);
 // printing-utility functions
 void    debug(char *str);
 void	debug_print_env(char **envp);

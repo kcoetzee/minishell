@@ -24,8 +24,7 @@ void    ft_putstr(const char *str)
     }
 }
 
-
-void    process_input(char **envp, char *input)
+void    process_input(char ***envp, char *input)
 {
     // TODO
     char **args;
@@ -34,44 +33,46 @@ void    process_input(char **envp, char *input)
     //char *args[] = {input, 0};
 
     if (ft_strequ(args[0], "cd"))
-        run_builtin_cd(args, envp);
+        run_builtin_cd(args, *envp);
     else if (ft_strequ(args[0], "echo"))
-        run_builtin_echo(args, envp);
+        run_builtin_echo(args, *envp);
     else if (ft_strequ(args[0], "setenv"))
+	{
         run_builtin_setenv(args, envp);
+	}
     else if (ft_strequ(args[0], "unsetenv"))
         run_builtin_unsetenv(args, envp);
     else if (ft_strequ(args[0], "env"))
-        run_builtin_env(args, envp);
+        run_builtin_env(args, *envp);
     else if (ft_strequ(args[0], "exit"))
-        run_builtin_exit(args, envp);
+        run_builtin_exit(args, *envp);
     else
-	launch_program(args, envp);
+	launch_program(args, *envp);
         //ft_putstr("The program you are looking for does not exist.\n");
 }
 
 void    input_loop(char **argv, char **envp)
 {
 	char *line;
+	int i;
+
+	i = 0;
 	line = NULL;
 	
     ft_putstr("【ツ】>: ");
     while (get_next_line(0, &line) == 1)
 	{
-        if (line != NULL)
+ 		if (line != NULL)
 		{
-			//printf("%s\n", line);
-            process_input(envp, line);
-            ft_putstr("【ツ】>: ");
-            free(line);
+			if (!ft_strchr(line, '\t'))
+			{
+
+        		process_input(&envp, line);
+            	ft_putstr("【ツ】>: ");
+            	free(line);
+			}
 		}
 	}
-}
-
-void    test_builtin_echo(char **envp)
-{
-    char *argv[] = {"/bin/ls", ".", 0 };
-    launch_program(argv, envp);
 }
 
 int	test_vaughan_code(int argc, char **argv, char **envp)

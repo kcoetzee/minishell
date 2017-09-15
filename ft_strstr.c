@@ -3,40 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcoetzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/31 08:59:17 by kcoetzee          #+#    #+#             */
-/*   Updated: 2017/06/11 14:25:25 by kcoetzee         ###   ########.fr       */
+/*   Created: 2017/06/02 12:45:16 by lchant            #+#    #+#             */
+/*   Updated: 2017/06/02 12:45:21 by lchant           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "libft.h"
 
-char	*ft_strstr(const char *big, const char *little)
+char	*ft_strstr(const char *haystack, const char *needle)
 {
 	int i;
 	int j;
-	int k;
-	int has_found;
 
-	has_found = 0;
-	i = -1;
-	if (ft_strlen(little) == 0)
-		return ((char*)big);
-	while (big[++i] && !has_found)
+	if (ft_strlen(needle) == 0)
+		return ((char *)haystack);
+	i = 0;
+	while (haystack[i] != '\0')
 	{
-		if (big[i] == *little)
+		j = 0;
+		while (haystack[i + j] == needle[j] && haystack[i + j])
 		{
-			j = 0;
-			k = i;
-			has_found = 1;
-			while (*(little + j))
-				if (little[j++] != big[k++])
-					has_found = 0;
-			if (has_found)
-				return ((char *)big + i);
+			j++;
 		}
+		if (needle[j] == '\0')
+			return (char *)(haystack + (i));
+		i++;
 	}
 	return (NULL);
 }

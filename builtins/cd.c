@@ -10,8 +10,8 @@ void debug_print_env(char **envp)
 	while (envp[i])
 	{
 		j = 0;
-		ft_putchar(i + '0');
-		ft_putstr(") ");
+		//ft_putchar(i + '0');
+		//ft_putstr(") ");
 
 		while(envp[i][j])
 		{
@@ -35,6 +35,45 @@ int	get_num_args(char **argv)
 	return (i);
 }
 
+void	change_dir_absolute(char **argv, char **envp)
+{	
+	int ret;
+	char	*path;
+	t_env	*list;
+
+	path = argv[1];
+	
+	list = ft_load_list(envp);
+	if (argv[1] == 0)
+	{
+		debug("NO ARGUMENTS");
+		path = ft_get_env("HOME",list);
+		path = ft_strjoin("/",path);
+	}
+	else if (argv[1][0] == '~')
+	{
+
+		debug("TILDE");
+		path = ft_get_env("HOME",list);
+		path = ft_strjoin("/",path); 
+	}
+	else if (argv[1][0] == '-')
+	{
+		debug("BACK");
+		path = ft_get_env("PWD", list);	
+		path = ft_strjoin("/",path); 
+	}
+	if (ret = chdir(path))
+	{
+		ft_putstr("Directory does not exist or insufficient permission.\n");
+	}
+	else if (argv[1] && argv[1][0] == '-')
+	{
+		ft_putstr(path);
+		ft_putchar('\n');
+	}
+}
+
 void    run_builtin_cd(char **argv, char **envp)
 {
 	debug("running run_bultin-cd");
@@ -43,12 +82,23 @@ void    run_builtin_cd(char **argv, char **envp)
 	int	ret;
 	char *path;
 
+	if ( argv[1] == 0|| argv[1][0] == '/' || argv[1][0] == '~' || argv[1][0] == '-')
+	{
+		debug("printing");
+		change_dir_absolute(argv, envp);
+		return ;
+	}
+	
 	path = (char*)malloc(sizeof(char) * 255);
 	path = getcwd(path, 255);
-	path = ft_strjoin(path, "/");
+	if(argv[1][0] != '/')
+		path = ft_strjoin(path, "/");
 	printf("Current path: %s\n", path);
 	printf("New path: %s\n", ft_strjoin(path, argv[1]));
-	ret = chdir(ft_strjoin(path, argv[1]));	
+	if (ret = chdir(ft_strjoin(path, argv[1])))
+	{
+		ft_putstr("Directory does not exist or insufficient permission.\n");
+	};	
 
 	//t_env *list = ft_load_list(envp);
  	//list = ft_set_env("PWD", argv[1], list);
