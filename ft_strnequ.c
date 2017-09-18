@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <string.h>
+#include "main.h"
 
 /*
 ** remove below and include libft.h

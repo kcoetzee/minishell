@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "main.h"
+
 /*
 ** include libft.h again to remove below function
 */

@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "main.h"
+
 /*
 ** include libft.h to remove these below and fix norm error with this
 */

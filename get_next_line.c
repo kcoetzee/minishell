@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "main.h"
 
 static int		read_to_string(int const fd, char **string)
 {
