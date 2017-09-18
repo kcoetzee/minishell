@@ -12,14 +12,14 @@
 
 #include "main.h"
 
-int	list_len(t_env *list)
+int		list_len(t_env *list)
 {
-	int	i;
+	int		i;
 	t_env	*head;
 
 	i = 1;
 	head = list;
-	while(list->next)
+	while (list->next)
 	{
 		list = list->next;
 		i++;
@@ -30,27 +30,32 @@ int	list_len(t_env *list)
 
 char	**list_to_arr(t_env *list)
 {
-	int	len;
-	int	i;
-	int	j = -1;
+	int		len;
+	int		i;
+	int		j;
 	char	**arr;
 	t_env	*head;
 
 	i = 0;
+	j = -1;
 	len = list_len(list);
 	arr = (char**)malloc(sizeof(char*) * len);
-	while(list->next)
+	while (list->next)
 	{
 		arr[i] = ft_strdup(list->str);
 		i++;
 		list = list->next;
 	}
-	//while (arr[++j])
-	//	printf("%d: %s\n", j, arr[j]);
-	return(arr);
-}		
+	return (arr);
+}
 
-int	pos_equal(char *str)
+/*
+** before return in above function do we still need?
+** while (arr[++j])
+** printf("%d: %s\n", j, arr[j]);
+*/
+
+int		pos_equal(char *str)
 {
 	int	i;
 
@@ -58,10 +63,10 @@ int	pos_equal(char *str)
 	while (str[i] != '=' && str[i])
 		i++;
 	i++;
-	return(i);
+	return (i);
 }
 
-t_env		*ft_set_env(char *key, char *value, t_env *list)
+t_env	*ft_set_env(char *key, char *value, t_env *list)
 {
 	int		len;
 	char	*str;

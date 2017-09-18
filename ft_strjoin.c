@@ -10,24 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+/*
+** include libft.h to remove these below and fix norm error with this
+*/
 
-char *ft_strnew(int len);
-int	ft_strlen(const char *str);
+/*
+** remove these
+** char	*ft_strnew(int len);
+** int		ft_strlen(const char *str);
+*/
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char *join;
-	int s1_len;
-	int s2_len;
-	int i;
-	int j;
+	char	*join;
+	int		s1_len;
+	int		s2_len;
+	int		i;
+	int		j;
 
 	if (!s1 || !s2)
 		return (NULL);
 	i = -1;
 	j = -1;
-	s1_len = ft_strlen(s1); 
+	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	join = ft_strnew(s1_len + s2_len);
 	if (!join)

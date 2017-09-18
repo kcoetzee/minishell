@@ -1,20 +1,14 @@
-/*
- * =====================================================================================
- *
- *       Filename:  get_env.c
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  14/09/2017 14:53:21
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (), 
- *   Organization:  
- *
- * =====================================================================================
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/18 11:34:45 by lchant            #+#    #+#             */
+/*   Updated: 2017/09/18 11:34:49 by lchant           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "main.h"
 
@@ -25,13 +19,12 @@ char	*ft_get_env(char *key, t_env *list)
 	t_env	*head;
 
 	len = ft_strlen(key);
-	
 	head = list;
 	while (list->next)
 	{
 		if (ft_strncmp(list->str, key, pos_equal(list->str) - 1) == 0)
 		{
-			str = ft_strsub(list->str, len + 2, ft_strlen(list->str)); 
+			str = ft_strsub(list->str, len + 2, ft_strlen(list->str));
 			return (str);
 		}
 		list = list->next;

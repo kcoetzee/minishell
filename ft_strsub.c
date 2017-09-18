@@ -10,14 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+/*
+** include libft.h again to remove below function
+*/
 
-char *ft_strnew(int len);
+/*
+** remove this !!!!!!!!!char	*ft_strnew(int len);
+*/
 
 char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	char *new_string;
-	size_t i;
+	char	*new_string;
+	size_t	i;
 
 	i = 0;
 	if (!s)

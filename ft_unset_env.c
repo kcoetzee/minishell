@@ -14,26 +14,24 @@
 
 t_env		*ft_unset_env(char *key, t_env *list)
 {
-		int		len;
-		t_env	*head;
-		t_env	*temp;
+	int		len;
+	t_env	*head;
+	t_env	*temp;
 
-		head = list;
-		len = ft_strlen(key);
-		while (list->next != NULL)
-		{	
-			if (list->next->str == NULL)
-				return (head);
-			if (ft_strncmp(list->next->str, key, len) == 0) 
-			{
-				temp = list->next;
-				list->next = list->next->next;
-				free(temp);
-				return(head);
-			}
-
-			list = list->next;
+	head = list;
+	len = ft_strlen(key);
+	while (list->next != NULL)
+	{
+		if (list->next->str == NULL)
+			return (head);
+		if (ft_strncmp(list->next->str, key, len) == 0)
+		{
+			temp = list->next;
+			list->next = list->next->next;
+			free(temp);
+			return (head);
 		}
-
-		return(head);
+		list = list->next;
+	}
+	return (head);
 }
