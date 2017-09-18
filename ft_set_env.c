@@ -70,6 +70,7 @@ t_env		*ft_set_env(char *key, char *value, t_env *list)
 	str = ft_addchar(key, '=');
 	len = ft_strlen(key);
 	head = list;
+
 	while (list->next)
 	{
 		if (ft_strncmp(list->str, str, pos_equal(list->str)) == 0)

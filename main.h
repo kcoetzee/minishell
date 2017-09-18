@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "libft.h"
+#include "libft/libft.h"
 
 typedef	struct	s_env t_env;
 
