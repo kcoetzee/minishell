@@ -42,6 +42,18 @@ int		try_launch_absolute(char **args, char **envp)
 ** char *path[] = {"/bin/",0};
 */
 
+
+static	void	debug_path_list(char **path_list)
+{
+	int i = 0;
+	while (path_list[i])
+	{
+		printf("Pathlist[%d]: %s\n", i, path_list[i]);
+		i++;
+	}
+}
+
+
 int		try_launch_path(char **args, char **envp)
 {
 	char	*path;
@@ -53,6 +65,11 @@ int		try_launch_path(char **args, char **envp)
 	list = ft_load_list(envp);
 	path = ft_get_env("PATH", list);
 	path_list = ft_strsplit(path, ':');
+	
+	
+	debug_path_list(path_list);
+	
+	
 	i = 0;
 	found = 0;
 	if (path != NULL)
