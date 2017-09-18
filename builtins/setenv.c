@@ -1,10 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setenv.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/18 11:08:11 by lchant            #+#    #+#             */
+/*   Updated: 2017/09/18 11:08:13 by lchant           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../main.h"
 
-int	get_num_lines(char **str)
+/*
+** copy_env needs two lines less
+** addBytes not unixcase for realloc function fix???
+** newValue and newLen not unixcase for change_env function fix???
+*/
+
+int		get_num_lines(char **str)
 {
 	int i;
-	i = 0;
 
+	i = 0;
 	while (str[i])
 	{
 		i++;
@@ -14,9 +32,11 @@ int	get_num_lines(char **str)
 
 char	**copy_env(char **new_env, char **old_env)
 {
-	int i = 0;
-	int j = 0;
-	
+	int i;
+	int j;
+
+	j = 0;
+	i = 0;
 	printf("LINE LEN: %d\n", get_num_lines(old_env));
 	new_env = (char**)malloc(get_num_lines(old_env) + 1);
 	if (new_env == NULL)
@@ -43,20 +63,20 @@ char	**copy_env(char **new_env, char **old_env)
 
 void	realloc_env(char **envp, int addBytes)
 {
-	
+
 }
 
 void	change_env(char *name, char *value, char **envp)
 {
-	int i = 0;
-	int j = 0;
-
+	int		i;
+	int		j;
 	char	*newValue;
-	int	newLen;
+	int		newLen;
 
+	i = 0;
+	j = 0;
 	newLen = ft_strlen(value);
 	realloc_env(envp, newLen);
-
 	while (envp[i])
 	{
 		j = 0;
@@ -72,8 +92,8 @@ void	change_env(char *name, char *value, char **envp)
 
 void	run_builtin_setenv(char **argv, char ***envp)
 {
-	char *result;
-	t_env *list;
+	char	*result;
+	t_env	*list;
 
 	list = ft_load_list(*envp);
 	list = ft_set_env(argv[1], argv[2], list);

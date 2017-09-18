@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/18 10:30:29 by lchant            #+#    #+#             */
+/*   Updated: 2017/09/18 10:30:32 by lchant           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../main.h"
 
-void    run_builtin_exit(char **argv, char **envp)
+void	run_builtin_exit(char **argv, char **envp)
 {
 	debug("running run_builtin_exit");
 	exit(0);
