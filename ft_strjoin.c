@@ -43,7 +43,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		*(join + i) = *(s1 + i);
 	while (++j < s2_len)
 		*(join + i++) = *(s2 + j);
-	
 	join[i] = '\0';
 	return (join);
 }
