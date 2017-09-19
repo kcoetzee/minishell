@@ -16,7 +16,7 @@
 ** debug("Trying to find binary in current folder");
 */
 
-int		try_launch_local(char **args, char **envp)
+int				try_launch_local(char **args, char **envp)
 {
 	return (0);
 }
@@ -25,7 +25,7 @@ int		try_launch_local(char **args, char **envp)
 ** for second if Join the path with the name of the program
 */
 
-int		try_launch_absolute(char **args, char **envp)
+int				try_launch_absolute(char **args, char **envp)
 {
 	if (args[0][0] != '/')
 		return (0);
@@ -42,10 +42,11 @@ int		try_launch_absolute(char **args, char **envp)
 ** char *path[] = {"/bin/",0};
 */
 
-
 static	void	debug_path_list(char **path_list)
 {
-	int i = 0;
+	int i;
+
+	i = 0;
 	while (path_list[i])
 	{
 		printf("Pathlist[%d]: %s\n", i, path_list[i]);
@@ -53,8 +54,11 @@ static	void	debug_path_list(char **path_list)
 	}
 }
 
+/*
+** this has 31 lines needs to reduce again
+*/
 
-int		try_launch_path(char **args, char **envp)
+int				try_launch_path(char **args, char **envp)
 {
 	char	*path;
 	char	**path_list;
@@ -65,11 +69,7 @@ int		try_launch_path(char **args, char **envp)
 	list = ft_load_list(envp);
 	path = ft_get_env("PATH", list);
 	path_list = ft_strsplit(path, ':');
-	
-	
 	debug_path_list(path_list);
-	
-	
 	i = 0;
 	found = 0;
 	if (path != NULL)
@@ -98,7 +98,7 @@ int		try_launch_path(char **args, char **envp)
 ** 	second if check for spaces/tabs
 */
 
-int		process_errors(char **args, char **envp)
+int				process_errors(char **args, char **envp)
 {
 	if (args[0] == 0)
 		return (1);
@@ -114,7 +114,7 @@ int		process_errors(char **args, char **envp)
 ** inside else statement Error with the forking
 */
 
-int		launch_program(char **args, char **envp)
+int				launch_program(char **args, char **envp)
 {
 	pid_t	pid;
 	pid_t	wpid;
