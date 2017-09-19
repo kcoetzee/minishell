@@ -56,7 +56,7 @@ t_env	*ft_unset_env(char *key, t_env *list);
 t_env	*ft_load_list(char **env);
 t_env	*ft_set_env(char *key, char *value, t_env *list);
 int		get_next_line(const int fd, char **line);
-int		launch_program(char **args, char **envp);
+void	launch_program(t_command *command, char **envp);
 char	*ft_addchar(char *str, char c);
 char	**list_to_arr(t_env *list);
 char	*ft_get_env(char *key, t_env *list);
@@ -81,5 +81,8 @@ void	debug(char *str);
 void	debug_print_env(char **envp);
 
 char	*arg_list_to_line(t_args *list);
+char	**arg_list_to_arr(t_args *list);
+t_command	*create_list(char **input);
+void	execute_command_pipe(t_command *command, int fd[], char **envp, int state);
 
 #endif

@@ -77,21 +77,24 @@ void	ft_putstr(const char *str)
 void	process_input(char ***envp, char *input)
 {
 	char **args;
-	t_list *list;	
-	int	fd[i];
+	t_command *list;	
+	int	fd[2];
 	int pid;
 	int status;
 
 	args = ft_strsplit(input, ' ');
 	list = create_list(args);
 
+
 	while (list->next != NULL)
 	{
+		printf("Iterating through the list\n");
 		if (list->terminator[0] == '|')
 		{
+			printf("Fucking piping\n");
 			pipe(fd);
-			execute_command(list, fd, envp); // Run the source command, the writer.
-			execute_command(list->next, fd, envp); // The the destination command, the reader.
+			execute_command_pipe(list, fd, *envp, 1); // Run the source command, the writer.
+			execute_command_pipe(list->next, fd, *envp, 0); // The the destination command, the reader.
 			close(fd[0]);
 			close(fd[1]);
 		}
