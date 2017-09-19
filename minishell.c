@@ -50,7 +50,7 @@ void	ft_putstr(const char *str)
 ** ft_putstr("The program you are looking for does not exist.\n");
 */
 
-void	process_input(char ***envp, char *input)
+/*void	process_input(char ***envp, char *input)
 {
 	char **args;
 
@@ -71,6 +71,32 @@ void	process_input(char ***envp, char *input)
 		run_builtin_exit(args, *envp);
 	else
 		launch_program(args, *envp);
+}*/
+
+
+void	process_input(char ***envp, char *input)
+{
+	char **args;
+	t_list *list;	
+	int	fd[i];
+	int pid;
+	int status;
+
+	args = ft_strsplit(input, ' ');
+	list = create_list(args);
+
+	while (list->next != NULL)
+	{
+		if (list->terminator[0] == '|')
+		{
+			pipe(fd);
+			execute_command(list, fd, envp); // Run the source command, the writer.
+			execute_command(list->next, fd, envp); // The the destination command, the reader.
+			close(fd[0]);
+			close(fd[1]);
+		}
+		list = list->next;	
+	}
 }
 
 void	input_loop(char **argv, char **envp)
@@ -95,36 +121,7 @@ void	input_loop(char **argv, char **envp)
 	}
 }
 
-/*
-** removed comments !!!!!!!
-** list = ft_unset_env(argv[1], list);
-** this was before debug
-** while(list->next != NULL)
-** {
-** printf("%d: %s\n", ++i, list->str);
-** list = list->next;
-** }
-*/
 
-int		test_vaughan_code(int argc, char **argv, char **envp)
-{
-	int		i;
-	t_env	*list;
-
-	i = -1;
-	if (argc < 3)
-		return (0);
-	list = ft_load_list(envp);
-	list = ft_set_env(argv[1], argv[2], list);
-	envp = list_to_arr(list);
-	debug_print_env(envp);
-	return (0);
-}
-
-/*
-** removed comment
-** test_vaughan_code(argc, argv, envp);
-*/
 
 int		main(int argc, char **argv, char *envp[])
 {

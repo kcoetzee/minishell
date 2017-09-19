@@ -24,6 +24,23 @@
 ** fix this struct and s_env not separated by a single space.
 */
 
+typedef	struct	s_command t_command;
+typedef	struct	s_args t_args;
+
+struct	s_args
+{
+	char	*str;
+	t_args	*next;
+};
+
+struct	s_command
+{
+	char		*file_name;
+	char		*terminator;
+	t_args		*args;
+	t_command	*next;	
+};
+
 typedef	struct	s_env	t_env;
 
 struct				s_env
@@ -62,5 +79,7 @@ char	*remove_quotes(char *str);
 */
 void	debug(char *str);
 void	debug_print_env(char **envp);
+
+char	*arg_list_to_line(t_args *list);
 
 #endif

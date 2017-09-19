@@ -54,7 +54,7 @@ static	void	debug_path_list(char **path_list)
 }
 
 
-int		try_launch_path(char **args, char **envp)
+/*int		try_launch_path(char **args, char **envp)
 {
 	char	*path;
 	char	**path_list;
@@ -92,6 +92,44 @@ int		try_launch_path(char **args, char **envp)
 		exit(0);
 	}
 }
+*/
+
+int	try_launch_path(t_command *command, char **envp)
+{
+	char	*path;
+	char	**path_list;
+	int		i;
+	int		found;
+	t_env	*list;
+
+	list = ft_load_list(envp);
+	path = ft_get_env("PATH", list);
+	path_list = ft_strsplit(path, ':');
+
+	i = 0;
+	found = 0;
+	if (path != NULL)
+		free(path);
+	while (path_list[i])
+	{
+		path_list[i] = ft_strjoin(path_list[i], "/");
+		path_list[i] = ft_strjoin(path_list[i], command->file_name);	
+		path_list[i] = ft_strjoin(path_list[i], " ");
+		path_list[i] = ft_strjoin(path_list[i], arg_list_to_line(command->args));
+		path_list[i] = remove_quotes(path_list[i]);
+		printf("Attempting to launch [%s], at %s\n", command->file_name, path_list[i]);
+		if ((execve(path_list[i], arg_list_to_arr(command->args), envp) != -1))
+		{
+			found = 1;
+		}
+		i++;
+	}
+	if (!found)
+	{
+		ft_putstr("Command invalid.\n");
+		return (0);
+	}
+}
 
 /*
 **  first if function no commands
@@ -114,7 +152,54 @@ int		process_errors(char **args, char **envp)
 ** inside else statement Error with the forking
 */
 
-int		launch_program(char **args, char **envp)
+
+int		execute_builtin(t_list *command, int fd[])
+{
+	printf("Supposed to be running builtins.\n");	
+}
+
+void	launch_program(t_command *command, char **envp)
+{
+	//	First check if the name starts with a /
+	if (command->args->str[0] == '/')
+	{
+		//	-- launch_absolute_path
+		execvp(command->file_name, arg_list_to_line(command->args));
+		printf("Invalid path or filename. \n");
+	}
+	//	else try launch_path_var
+	else if (try_launch_path(command, envp) == 0)
+	{
+		execvp(command->file_name, arg_list_to_line(command->args));
+		printf("Invalid path or filename. \n");
+	}
+
+
+}
+
+void	execute_command(t_command *command, int fd[], char **envp)
+{
+	pid_t	pid;
+	pid_t	wpid;
+	int		status;
+
+	// First try executing the builtins
+	if (execute_builtin(command, fd))
+		return ;
+	
+	// Try finding the program
+	pid = fork();
+
+	if (pid == 0) // Meaning it's the child
+	{
+		dup2(pfd[1], 1); // This end of the pipe is standard output
+		close(pdf[0]); // Thus we don't need the other side
+		launch_program(command, envp);
+	}
+}
+
+/*in
+ * t		launch_program(char **args, char **envp)
 {
 	pid_t	pid;
 	pid_t	wpid;
@@ -146,4 +231,4 @@ int		launch_program(char **args, char **envp)
 			wpid = waitpid(pid, &status, WUNTRACED);
 		}
 	}
-}
+}*/
