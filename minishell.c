@@ -86,20 +86,35 @@ void	process_input(char ***envp, char *input)
 	list = create_list(args);
 
 
+
 	while (list->next != NULL)
 	{
-		printf("Iterating through the list\n");
+		// Piping
 		if (list->terminator[0] == '|')
 		{
-			printf("Fucking piping\n");
 			pipe(fd);
+
+			
 			execute_command_pipe(list, fd, *envp, 1); // Run the source command, the writer.
-			execute_command_pipe(list->next, fd, *envp, 0); // The the destination command, the reader.
+			execute_command_pipe(list->next, fd, *envp, 0); // The the destination command, the reader.	
+			
+			
 			close(fd[0]);
 			close(fd[1]);
+			list = list->next;	
 		}
+		else
+		{
+			execute_command(list, *envp);	
+		}
+
+		while ((pid = wait(&status)) != -1)
+			fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
+	
 		list = list->next;	
 	}
+
+
 }
 
 void	input_loop(char **argv, char **envp)

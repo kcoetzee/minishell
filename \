@@ -16,13 +16,12 @@ int	check_opp(char *str)
 	return (0);
 }
 
-char	**arg_list_to_arr(t_args *list, t_command *cmd_list)
+char	**arg_list_to_arr(t_args *list)
 {
 	char	*args;
 	char	**newstr;
 
-	args = ft_strjoin(cmd_list->file_name, " ");
-	args = ft_strjoin(args, arg_list_to_line(list));
+	args = arg_list_to_line(list);
 	newstr = ft_strsplit(args, ' ');
 	return(newstr);
 }
