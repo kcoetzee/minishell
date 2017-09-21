@@ -29,18 +29,6 @@ void	debug(char *str)
 	ft_putchar('\n');
 }
 
-void	ft_putstr(const char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		ft_putchar(str[i]);
-		i++;
-	}
-}
-
 /*
 ** removed comments !!!!!
 ** TODO
