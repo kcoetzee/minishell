@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:53:51 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/18 11:53:53 by lchant           ###   ########.fr       */
+/*   Updated: 2017/09/21 13:52:10 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,12 +166,14 @@ void	launch_program(t_command *command, char **envp)
 		//	-- launch_absolute_path
 		execvp(command->file_name, arg_list_to_arr(command->args, command));
 		printf("Invalid path or filename. \n");
+		exit(0);
 	}
 	//	else try launch_path_var
 	else if (try_launch_path(command, envp) == 0)
 	{
 		execvp(command->file_name, arg_list_to_arr(command->args, command));
 		printf("Invalid path or filename. \n");
+		exit(0);
 	}
 }
 
@@ -196,7 +198,6 @@ void	execute_command_pipe(t_command *command, int fd[], char **envp, int state)
 			close(fd[1]);	
 		// Thus we don't need the other side
 		launch_program(command, envp);
-
 	}
 	else if (pid < 0)
 	{
