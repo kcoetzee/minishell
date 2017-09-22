@@ -61,6 +61,53 @@ void	debug(char *str)
 		launch_program(args, *envp);
 }*/
 
+int		is_command_terminator(char c)
+{
+	if (c == '|' || c == '>' || c == ';' || c == '<')
+		return (1);
+	else 
+		return (0);	
+}
+
+char	*format_input_string(char *line)
+{
+	int i;
+	int j;
+	char *result;
+	
+	fprintf(stderr, "FORMAT INPUT_STRING\n");
+	result = ft_strnew(ft_strlen(line) + 10);
+	i = 0;
+	j = 0;
+	while (line[i] && line[i] == ' ')
+			i++;
+	while (line[i])
+	{
+		if (line[i - 1] && line[i - 1] == ' ' && line[i] == ' ')
+		{	
+			i++;
+		} 
+		else if (line[i + 1] && is_command_terminator(line[i + 1]) && line[i] != ' ')
+		{
+			result[j++] = line[i++];
+			result[j++] = ' ';
+		}
+		else if (line[i + 1] && is_command_terminator(line[i]) && line[i + 1] != ' ')
+		{
+			result[j++] = line[i++];
+			result[j++] = ' ';
+		}	
+		else
+		{	
+			result[j] = line[i];
+			j++;
+			i++;	
+		}
+	}
+	line[i] = '\0';
+	fprintf(stderr, "line: $%s$\n", result);	
+	return (result);
+}
 
 void	process_input(char ***envp, char *input)
 {
@@ -72,12 +119,13 @@ void	process_input(char ***envp, char *input)
 	int status;
 	t_command *prev;
 
+	
 	args = ft_strsplit(input, ' ');
 	list = create_list(args);
 	prev = NULL;
 
 
-	while (list != NULL)
+	while (list->next != NULL)
 	{
 		// Piping
 		if (list->terminator[0] == '|')
@@ -128,9 +176,11 @@ void	process_input(char ***envp, char *input)
 			fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
 }
 
+
 void	input_loop(char **argv, char **envp)
 {
 	char	*line;
+	char	*format;
 	int		i;
 
 	i = 0;
@@ -142,9 +192,11 @@ void	input_loop(char **argv, char **envp)
 		{
 			if (!ft_strchr(line, '\t'))
 			{
-				process_input(&envp, line);
+				format = format_input_string(line);
+				process_input(&envp, format);
 				ft_putstr("【ツ】>: ");
 				free(line);
+				free(format);
 			}
 		}
 	}

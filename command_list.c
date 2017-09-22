@@ -110,5 +110,6 @@ t_command	*create_list(char **input)
 		if (i < len)
 			list = add_terminator(input[i], list);
 	}
+	list->next = NULL;
 	return (lhead);
 }
