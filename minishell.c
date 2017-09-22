@@ -96,13 +96,12 @@ void	process_input(char ***envp, char *input)
 			execute_command(list, *envp);	
 		}
 
-		while ((pid = wait(&status)) != -1)
-			fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
-	
 		list = list->next;	
 	}
 
 
+		while ((pid = wait(&status)) != -1)
+			fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
 }
 
 void	input_loop(char **argv, char **envp)
