@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 12:41:17 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/18 12:41:18 by lchant           ###   ########.fr       */
+/*   Updated: 2017/09/22 15:09:36 by vlangman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,18 @@ void	debug(char *str)
 		launch_program(args, *envp);
 }*/
 
+int		ft_count_cmd(t_command *list)
+{
+	int	i;
+
+	i = 0;
+	while(list->next)
+	{
+		list = list->next;
+		i++;
+	}
+	return (i);
+}
 
 void	process_input(char ***envp, char *input)
 {
@@ -70,39 +82,26 @@ void	process_input(char ***envp, char *input)
 	int pid;
 	int status;
 
+	fd[0] = 0;
+	fd[1] = 1;
 	args = ft_strsplit(input, ' ');
 	list = create_list(args);
-
-
-
 	while (list->next != NULL)
 	{
 		// Piping
 		if (list->terminator[0] == '|')
 		{
-			pipe(fd);
-
-			
-			execute_command_pipe(list, fd, *envp, 1); // Run the source command, the writer.
-			execute_command_pipe(list->next, fd, *envp, 0); // The the destination command, the reader.	
-			
-			
-			close(fd[0]);
-			close(fd[1]);
-			list = list->next;	
+			execute_command_pipe(list, fd, *envp, ft_count_cmd(list)); // Run the source command, the writer.
 		}
 		else
 		{
 			execute_command(list, *envp);	
 		}
-
 		while ((pid = wait(&status)) != -1)
 			fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
 	
 		list = list->next;	
 	}
-
-
 }
 
 void	input_loop(char **argv, char **envp)
@@ -120,7 +119,7 @@ void	input_loop(char **argv, char **envp)
 			if (!ft_strchr(line, '\t'))
 			{
 				process_input(&envp, line);
-				ft_putstr("【ツ】>: ");
+				ft_putstr("8=====D: ");
 				free(line);
 			}
 		}

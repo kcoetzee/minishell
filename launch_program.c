@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:53:51 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/21 13:52:10 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/22 16:42:48 by vlangman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		try_launch_absolute(char **args, char **envp)
 		ft_putstr("Command invalid.\n");
 		exit(0);
 	}
+	return(0);
 }
 
 /*
@@ -129,6 +130,7 @@ int	try_launch_path(t_command *command, char **envp)
 		exit(0);
 		return (0);
 	}
+	return(0);
 }
 
 /*
@@ -161,6 +163,7 @@ int		execute_builtin(t_command *command, int fd[])
 void	launch_program(t_command *command, char **envp)
 {
 	//	First check if the name starts with a /
+	fprintf(stderr, "ATTEMPTING TO LAUNCH PROGRAM: %s\n", command->file_name);
 	if (command->file_name[0] == '/')
 	{
 		//	-- launch_absolute_path
@@ -177,32 +180,59 @@ void	launch_program(t_command *command, char **envp)
 	}
 }
 
-void	execute_command_pipe(t_command *command, int fd[], char **envp, int state)
+void	ft_child(int fd_in[], t_command *command, char **envp, int count)
 {
-	pid_t	pid;
-	pid_t	wpid;
-	int		status;
+	fprintf(stderr, "READING FROM FILE DESCRIPTOR: %d\n", fd_in[0]);
+	dup2(1, fd_in[1]);
+	fprintf(stderr, "WRITING IN FILE DESCRIPTOR: %d\n", fd_in[1]);
+	launch_program(command, envp);
+}
 
-	// First try executing the builtins
-	if (execute_builtin(command, fd))
-		return ;
-	
-	// Try finding the program
-	pid = fork();
-	if (pid == 0) // Meaning it's the child
+void	execute_command_pipe(t_command *command, int fd_in[], char **envp, int count) 
+{
+	int		fd_out[2];
+	int		status;
+	pid_t	wpid;
+	pid_t	pid;
+
+	fprintf(stderr, "FILE DESCRIPTOR TO CLONE ON LOOP.... READ: %d, WRITE %d\n", fd_in[0], fd_in[1]);
+	fprintf(stderr, "PROGRAMS LEFT TO RUN: %d\n", count);
+	if (pipe(fd_out) == -1)
 	{
-		dup2(fd[state], state);
-		if (state == 1)
-			close(fd[0]);
-		else if (state == 0)
-			close(fd[1]);	
-		// Thus we don't need the other side
-		launch_program(command, envp);
-	}
-	else if (pid < 0)
-	{
-		printf("forking error, pid < 0\n");
+		fprintf(stderr, "PIPE ERROR");
 		exit(1);
+	}
+	if ((pid = fork()) == 0) //child process
+	{
+		fprintf(stderr, "NEW CHILD PROCESS FOR {{{%s}}}\n", command->file_name);
+		if (count > 0) 
+		//only fork new child if there is a command to run since recursive forking
+		{
+			close(fd_in[0]); 
+			//closing read end of old fd
+			fprintf(stderr, "SETTING OLD WRITE FD: %d TO", fd_in[1]); 
+			dup2(fd_in[1], fd_out[0]); 
+			//duplicating the write end as new read end so the child process just gets pipe to read from at fd[0] close input
+			fprintf(stderr, " NEW READ FILE DESCRIPTOR: %d\n", fd_out[0]);
+			close(fd_in[1]);
+			ft_child(fd_out, command, envp, count);
+		}
+	}
+	else //parent process
+	{
+		if (count == 0)
+		{
+			fprintf(stderr, "LAST PROCESS IS: %s\n", command->file_name);
+			exit(1);
+		}
+			//waiting for child process to close	
+			wpid = waitpid(pid, &status, WUNTRACED);
+			while (!WIFEXITED(status) && !WIFSIGNALED(status))
+				wpid = waitpid(pid, &status, WUNTRACED);
+			fprintf(stderr, "CHILD PROCESS: %s HAS COMPLETED\n", command->file_name);
+			fprintf(stderr, "%s WROTE INTO FD: %d\n", command->file_name, fd_out[1]);
+			fprintf(stderr, "ENTERING RECURSION\n");
+			execute_command_pipe(command->next, fd_out, envp, count - 1);
 	}
 }
 
@@ -259,10 +289,10 @@ void	execute_command(t_command *command, char **envp)
 	}
 	else
 	{
-		wpid = waitpid(pid, &status, WUNTRACED);
-		while (!WIFEXITED(status) && !WIFSIGNALED(status))
+		wpid = waitpid(pid, &status, wuntraced);
+		while (!wifexited(status) && !wifsignaled(status))
 		{
-			wpid = waitpid(pid, &status, WUNTRACED);
+			wpid = waitpid(pid, &status, wuntraced);
 		}
 	}
 }*/
