@@ -66,38 +66,62 @@ void	process_input(char ***envp, char *input)
 {
 	char **args;
 	t_command *list;	
-	int	fd[2];
+	int	new_fd[2];
+	int old_fd[2];
 	int pid;
 	int status;
+	t_command *prev;
 
 	args = ft_strsplit(input, ' ');
 	list = create_list(args);
+	prev = NULL;
 
 
-
-	while (list->next != NULL)
+	while (list != NULL)
 	{
 		// Piping
 		if (list->terminator[0] == '|')
 		{
-			pipe(fd);
-
-			
-			execute_command_pipe(list, fd, *envp, 1); // Run the source command, the writer.
-			execute_command_pipe(list->next, fd, *envp, 0); // The the destination command, the reader.	
-			
-			
-			close(fd[0]);
-			close(fd[1]);
-			list = list->next;	
+			pipe(new_fd);
 		}
-		else
+		pid = fork();
+
+		if (pid == 0) // if child
 		{
-			execute_command(list, *envp);	
+			// If there is a previous cmd
+			if (prev != NULL)
+			{
+				dup2(old_fd[0], 0);
+				close(old_fd[0]);
+				close(old_fd[1]);
+			}
+			// If there is a next command
+			if (list->next != NULL)
+			{
+				close(new_fd[0]);
+				dup2(new_fd[1], 1);
+				close(new_fd[1]);
+			}
+			launch_program(list, *envp);
 		}
-
+		else // if parent
+		{	
+			if (prev != NULL)
+			{
+				close(old_fd[0]);
+				close(old_fd[1]);
+			}
+			if (list->next != NULL)
+			{
+				old_fd[0] = new_fd[0];
+				old_fd[1] = new_fd[1];
+			}
+		}
+		prev = list;
 		list = list->next;	
 	}
+	close(old_fd[0]);
+	close(old_fd[1]);
 
 
 		while ((pid = wait(&status)) != -1)
