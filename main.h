@@ -56,7 +56,7 @@ t_env	*ft_unset_env(char *key, t_env *list);
 t_env	*ft_load_list(char **env);
 t_env	*ft_set_env(char *key, char *value, t_env *list);
 int		get_next_line(const int fd, char **line);
-void	launch_program(t_command *command, char **envp);
+void	launch_program(t_command *command, char ***envp);
 char	*ft_addchar(char *str, char c);
 char	**list_to_arr(t_env *list);
 char	*ft_get_env(char *key, t_env *list);
@@ -65,7 +65,7 @@ int		pos_equal(char *str);
 /*
 ** builtin programs
 */
-void	run_builtin_echo(char **args, char **envp);
+void	run_builtin_echo(t_command *command, char **envp);
 void	run_builtin_cd(char **args, char **envp);
 void	run_builtin_setenv(char **args, char ***envp);
 void	run_builtin_unsetenv(char **args, char ***envp);

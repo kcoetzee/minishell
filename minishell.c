@@ -29,38 +29,6 @@ void	debug(char *str)
 	ft_putchar('\n');
 }
 
-/*
-** removed comments !!!!!
-** TODO
-** below was inbetween the first if and args
-** char *args[] = {input, 0};
-** near end of function but didnt remove for debug
-** ft_putstr("The program you are looking for does not exist.\n");
-*/
-
-/*void	process_input(char ***envp, char *input)
-{
-	char **args;
-
-	args = ft_strsplit(input, ' ');
-	if (ft_strequ(args[0], "cd"))
-		run_builtin_cd(args, *envp);
-	else if (ft_strequ(args[0], "echo"))
-		run_builtin_echo(args, *envp);
-	else if (ft_strequ(args[0], "setenv"))
-	{
-		run_builtin_setenv(args, envp);
-	}
-	else if (ft_strequ(args[0], "unsetenv"))
-		run_builtin_unsetenv(args, envp);
-	else if (ft_strequ(args[0], "env"))
-		run_builtin_env(args, *envp);
-	else if (ft_strequ(args[0], "exit"))
-		run_builtin_exit(args, *envp);
-	else
-		launch_program(args, *envp);
-}*/
-
 int		is_command_terminator(char c)
 {
 	if (c == '|' || c == '>' || c == ';' || c == '<')
@@ -150,7 +118,7 @@ void	process_input(char ***envp, char *input)
 				dup2(new_fd[1], 1);
 				close(new_fd[1]);
 			}
-			launch_program(list, *envp);
+			launch_program(list, envp);
 		}
 		else // if parent
 		{	

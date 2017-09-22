@@ -12,16 +12,16 @@
 
 #include "../main.h"
 
-void	run_builtin_echo(char **argv, char **envp)
+void	run_builtin_echo(t_command *command, char **envp)
 {
 	int i;
 
-	i = 1;
-	while (argv[i])
+	i = 0;
+	while (command->args->next != NULL)
 	{
-		ft_putstr(argv[i]);
+		ft_putstr(command->args->str);
 		ft_putchar(' ');
-		i++;
+		command->args = command->args->next;
 	}
-	ft_putchar('\n');
+	//ft_putchar('\n');
 }

@@ -158,8 +158,17 @@ int		execute_builtin(t_command *command, int fd[])
 	return (0);
 }
 
-void	launch_program(t_command *command, char **envp)
+void	try_launch_builtins(t_command *command, char ***envp)
 {
+	fprintf(stderr, "Trying to launch a builtin\n");
+	if (ft_strequ(command->file_name, "echo"))
+		run_builtin_echo(command, *envp);	
+}
+
+void	launch_program(t_command *command, char ***envp)
+{
+	// First check if it's a builtin
+	try_launch_builtins(command, envp);
 	//	First check if the name starts with a /
 	if (command->file_name[0] == '/')
 	{
@@ -169,7 +178,7 @@ void	launch_program(t_command *command, char **envp)
 		exit(0);
 	}
 	//	else try launch_path_var
-	else if (try_launch_path(command, envp) == 0)
+	else if (try_launch_path(command, *envp) == 0)
 	{
 		execvp(command->file_name, arg_list_to_arr(command->args, command));
 		printf("Invalid path or filename. \n");
@@ -177,92 +186,4 @@ void	launch_program(t_command *command, char **envp)
 	}
 }
 
-void	execute_command_pipe(t_command *command, int fd[], char **envp, int state)
-{
-	pid_t	pid;
-	pid_t	wpid;
-	int		status;
 
-	// First try executing the builtins
-	if (execute_builtin(command, fd))
-		return ;
-	
-	// Try finding the program
-	pid = fork();
-	if (pid == 0) // Meaning it's the child
-	{
-		dup2(fd[state], state);
-		if (state == 1)
-			close(fd[0]);
-		else if (state == 0)
-			close(fd[1]);	
-		// Thus we don't need the other side
-		launch_program(command, envp);
-	}
-	else if (pid < 0)
-	{
-		printf("forking error, pid < 0\n");
-		exit(1);
-	}
-}
-
-void	execute_command(t_command *command, char **envp)
-{
-	pid_t	pid;
-	pid_t	wpid;
-	int		status;
-	int		fd[2];
-
-	// First try executing the builtins
-	if (execute_builtin(command, fd))
-		return ;
-	
-	// Try finding the program
-	pid = fork();
-
-	if (pid == 0) // Meaning it's the child
-	{
-		printf("Executing command: normal\n");
-		launch_program(command, envp);
-	}
-	else if (pid < 0)
-	{
-		printf("forking error, pid < 0\n");
-		exit (1);
-	}
-}
-
-/*in
- * t		launch_program(char **args, char **envp)
-{
-	pid_t	pid;
-	pid_t	wpid;
-	int		status;
-	char	*prog_name;
-
-	prog_name = ft_strtrim(args[0]);
-	args[0] = prog_name;
-	if (process_errors(args, envp))
-		return (0);
-	pid = fork();
-	if (pid == 0)
-	{
-		if (try_launch_local(args, envp) == 0)
-		{
-			if (try_launch_absolute(args, envp) == 0)
-				try_launch_path(args, envp);
-		}
-	}
-	else if (pid < 0)
-	{
-		printf("error forking, pid < 0\n");
-	}
-	else
-	{
-		wpid = waitpid(pid, &status, WUNTRACED);
-		while (!WIFEXITED(status) && !WIFSIGNALED(status))
-		{
-			wpid = waitpid(pid, &status, WUNTRACED);
-		}
-	}
-}*/
