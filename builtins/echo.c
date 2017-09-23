@@ -12,7 +12,7 @@
 
 #include "../main.h"
 
-void	run_builtin_echo(t_command *command, char **envp)
+int	run_builtin_echo(t_command *command, char **envp)
 {
 	int i;
 
@@ -23,5 +23,7 @@ void	run_builtin_echo(t_command *command, char **envp)
 		ft_putchar(' ');
 		command->args = command->args->next;
 	}
+	ft_putchar('\n');
+	return (1);
 	//ft_putchar('\n');
 }

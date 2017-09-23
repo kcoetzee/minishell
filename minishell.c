@@ -95,6 +95,12 @@ void	process_input(char ***envp, char *input)
 
 	while (list->next != NULL)
 	{
+		/// First check if it's a builtin
+		if (try_launch_builtins(list, envp))
+		{
+			list = list->next;
+			break ;
+		}
 		// Piping
 		if (list->terminator[0] == '|')
 		{

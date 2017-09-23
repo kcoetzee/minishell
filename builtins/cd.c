@@ -91,7 +91,7 @@ void	change_dir_absolute(char **argv, char **envp)
 ** 	after run_builtin function debug("running run_bultin-cd");
 */
 
-void	run_builtin_cd(t_command *command, char ***envp)
+int	run_builtin_cd(t_command *command, char ***envp)
 {
 	char *home_path;
 	t_env *list;
@@ -116,6 +116,7 @@ void	run_builtin_cd(t_command *command, char ***envp)
 			}
 		}
 	}
+	return (1);
 }
 
 /*void	run_builtin_cd(char **argv, char **envp)

@@ -117,22 +117,24 @@ int		execute_builtin(t_command *command, int fd[])
 	return (0);
 }
 
-void	try_launch_builtins(t_command *command, char ***envp)
+int	try_launch_builtins(t_command *command, char ***envp)
 {
 	
 	fprintf(stderr, "Trying to run builtin\n");
 	if (ft_strequ(command->file_name, "echo"))
-		run_builtin_echo(command, *envp);
+	{
+		return(run_builtin_echo(command, *envp));
+	}
 	else if(ft_strequ(command->file_name, "cd"))
 	{
-		run_builtin_cd(command, envp);
+		return (run_builtin_cd(command, envp));
 	}
+
+	return (0);
 }
 
 void	launch_program(t_command *command, char ***envp)
 {
-	// First check if it's a builtin
-	try_launch_builtins(command, envp);
 	//	First check if the name starts with a /
 	if (command->file_name[0] == '/')
 	{

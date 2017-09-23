@@ -65,15 +65,15 @@ int		pos_equal(char *str);
 /*
 ** builtin programs
 */
-void	run_builtin_echo(t_command *command, char **envp);
-void	run_builtin_cd(t_command *command, char ***envp);
+int	run_builtin_echo(t_command *command, char **envp);
+int	run_builtin_cd(t_command *command, char ***envp);
 void	run_builtin_setenv(char **args, char ***envp);
 void	run_builtin_unsetenv(char **args, char ***envp);
 void	run_builtin_env(char **args, char **envp);
 void	run_builtin_exit(char **args, char **envp);
 char	*ft_strtrim_delim(char const *s, char delim);
 char	*remove_quotes(char *str);
-
+int	try_launch_builtins(t_command *command, char ***envp);
 /*
 ** printing-utility functions
 */
