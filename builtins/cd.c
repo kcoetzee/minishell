@@ -116,6 +116,13 @@ int	run_builtin_cd(t_command *command, char ***envp)
 			}
 		}
 	}
+	else if (command->args->str[0] == '/' || command->args->str[0] == '.')
+	{
+		printf("Attempting path: %s\n", command->args->str);
+		if ((ret = chdir(command->args->str)))
+			fprintf(stderr, "Invalid directory\n");
+	}
+
 	return (1);
 }
 
