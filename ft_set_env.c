@@ -6,7 +6,7 @@
 /*   By: vlangman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/13 12:33:42 by vlangman          #+#    #+#             */
-/*   Updated: 2017/09/13 12:33:43 by vlangman         ###   ########.fr       */
+/*   Updated: 2017/09/23 16:17:21 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 	char	*str;
 	t_env	*head;
 
+	
 	str = ft_addchar(key, '=');
 	len = ft_strlen(key);
 	head = list;

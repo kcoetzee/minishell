@@ -55,6 +55,7 @@ void	print_list(t_command *list)
 			list->args = list->args->next;
 		}
 		printf("TERMINATOR: %s\n", list->terminator);
+		printf("NEXT: %p\n", list->next);
 		list = list->next;
 	}
 }
@@ -85,11 +86,11 @@ t_command	*create_list(char **input)
 	t_command	*list;
 	t_command	*lhead;
 
-	i = -1;
+	i = 0;
 	list = (t_command*)malloc(sizeof(t_command));
 	lhead = list;
 	len = ft_arr_len(input);
-	while (++i < len)
+	while (i < len)
 	{
 		list->file_name = ft_strdup(input[i++]);
 		list->args = (t_args*)malloc(sizeof(t_args));
@@ -109,6 +110,7 @@ t_command	*create_list(char **input)
 		}
 		if (i < len)
 			list = add_terminator(input[i], list);
+		i++;
 	}
 	list->next = NULL;
 	return (lhead);

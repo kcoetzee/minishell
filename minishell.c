@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 12:41:17 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/18 12:41:18 by lchant           ###   ########.fr       */
+/*   Updated: 2017/09/23 16:24:56 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	process_input(char ***envp, char *input)
 		// Piping
 		if (list->terminator[0] == '|')
 		{
+			debug("PIPING");
 			pipe(new_fd);
 		}
 		pid = fork();
@@ -107,17 +108,21 @@ void	process_input(char ***envp, char *input)
 			// If there is a previous cmd
 			if (prev != NULL)
 			{
+				debug("prev != NULL");
 				dup2(old_fd[0], 0);
 				close(old_fd[0]);
 				close(old_fd[1]);
 			}
 			// If there is a next command
-			if (list->next != NULL)
+			if (list->next->file_name != NULL)
 			{
+				debug("list->next != NULL");
 				close(new_fd[0]);
 				dup2(new_fd[1], 1);
 				close(new_fd[1]);
 			}
+
+			fprintf(stderr, "ENTERED LOOP\n");
 			launch_program(list, envp);
 		}
 		else // if parent

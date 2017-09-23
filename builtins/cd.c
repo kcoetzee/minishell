@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 10:31:44 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/18 10:31:45 by lchant           ###   ########.fr       */
+/*   Updated: 2017/09/23 16:24:45 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	change_dir_absolute(char **argv, char **envp)
 		path = ft_get_env("PWD", list);
 		path = ft_strjoin("/", path);
 	}
-	if (ret = chdir(path))
+	if ((ret = chdir(path)))
 	{
 		ft_putstr("Directory does not exist or insufficient permission.\n");
 	}
@@ -91,7 +91,34 @@ void	change_dir_absolute(char **argv, char **envp)
 ** 	after run_builtin function debug("running run_bultin-cd");
 */
 
-void	run_builtin_cd(char **argv, char **envp)
+void	run_builtin_cd(t_command *command, char ***envp)
+{
+	char *home_path;
+	t_env *list;
+	int		ret;
+
+	list = ft_load_list(*envp);
+	home_path = ft_get_env("HOME", list);	
+
+	if (command->args->str == NULL)
+	{
+		if (home_path == NULL)
+			fprintf(stderr, "HOME directory not set and no directory operatives\n");
+		else 
+		{
+			printf("Home path: %s\n", home_path);
+			if ((ret = chdir(home_path)))
+				fprintf(stderr, "HOME directory not valid.");
+			else
+			{
+				list = ft_set_env("PWD", home_path, list);
+				*envp = list_to_arr(list);
+			}
+		}
+	}
+}
+
+/*void	run_builtin_cd(char **argv, char **envp)
 {
 	char	*program_name;
 	int		num_args;
@@ -115,7 +142,7 @@ void	run_builtin_cd(char **argv, char **envp)
 	{
 		ft_putstr("Directory does not exist or insufficient permission.\n");
 	}
-}
+}*/
 /*
 ** t_env *list = ft_load_list(envp);
 ** list = ft_set_env("PWD", argv[1], list);

@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:47:05 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/18 11:47:07 by lchant           ###   ########.fr       */
+/*   Updated: 2017/09/23 16:25:10 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		pos_equal(char *str);
 ** builtin programs
 */
 void	run_builtin_echo(t_command *command, char **envp);
-void	run_builtin_cd(char **args, char **envp);
+void	run_builtin_cd(t_command *command, char ***envp);
 void	run_builtin_setenv(char **args, char ***envp);
 void	run_builtin_unsetenv(char **args, char ***envp);
 void	run_builtin_env(char **args, char **envp);

@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:53:51 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/21 13:52:10 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/23 16:25:11 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,47 +52,6 @@ static	void	debug_path_list(char **path_list)
 		i++;
 	}
 }
-
-
-/*int		try_launch_path(char **args, char **envp)
-{
-	char	*path;
-	char	**path_list;
-	int		i;
-	int		found;
-	t_env	*list;
-
-	list = ft_load_list(envp);
-	path = ft_get_env("PATH", list);
-	path_list = ft_strsplit(path, ':');
-	
-	
-	debug_path_list(path_list);
-	
-	
-	i = 0;
-	found = 0;
-	if (path != NULL)
-		free(path);
-	while (path_list[i])
-	{
-		path_list[i] = ft_strjoin(path_list[i], "/");
-		path_list[i] = ft_strjoin(path_list[i], args[0]);
-		path_list[i] = remove_quotes(path_list[i]);
-		printf("Attempting to launch [%s], at %s\n", args[0], path_list[i]);
-		if ((execve(path_list[i], args, envp) != -1))
-		{
-			found = 1;
-		}
-		i++;
-	}
-	if (!found)
-	{
-		ft_putstr("Command invalid.\n");
-		exit(0);
-	}
-}
-*/
 
 int	try_launch_path(t_command *command, char **envp)
 {
@@ -160,9 +119,14 @@ int		execute_builtin(t_command *command, int fd[])
 
 void	try_launch_builtins(t_command *command, char ***envp)
 {
-	fprintf(stderr, "Trying to launch a builtin\n");
+	
+	fprintf(stderr, "Trying to run builtin\n");
 	if (ft_strequ(command->file_name, "echo"))
-		run_builtin_echo(command, *envp);	
+		run_builtin_echo(command, *envp);
+	else if(ft_strequ(command->file_name, "cd"))
+	{
+		run_builtin_cd(command, envp);
+	}
 }
 
 void	launch_program(t_command *command, char ***envp)
