@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:53:51 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/24 08:54:10 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/24 09:08:27 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int		execute_builtin(t_command *command, int fd[])
 int	try_launch_builtins(t_command *command, char ***envp)
 {
 	
-	fprintf(stderr, "Trying to run builtin\n");
+	fprintf(stderr, "Trying to run builtin: $%s$\n", command->file_name);
 	if (ft_strequ(command->file_name, "echo"))
 		return(run_builtin_echo(command, *envp));
 	else if(ft_strequ(command->file_name, "cd"))
@@ -129,6 +129,8 @@ int	try_launch_builtins(t_command *command, char ***envp)
 		return (run_builtin_env(command, *envp));
 	else if (ft_strequ(command->file_name, "exit"))
 			run_builtin_exit();
+	else if (ft_strequ(command->file_name, "setenv"))
+			return(run_builtin_setenv(command, envp));
 	return (0);
 }
 

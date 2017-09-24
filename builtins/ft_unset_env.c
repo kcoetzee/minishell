@@ -6,11 +6,11 @@
 /*   By: vlangman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/13 12:33:47 by vlangman          #+#    #+#             */
-/*   Updated: 2017/09/13 12:33:48 by vlangman         ###   ########.fr       */
+/*   Updated: 2017/09/24 09:04:26 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "../main.h"
 
 t_env		*ft_unset_env(char *key, t_env *list)
 {
