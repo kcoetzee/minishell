@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 12:41:17 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/23 16:24:56 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/24 08:28:07 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,10 @@ void	process_input(char ***envp, char *input)
 
 
 		while ((pid = wait(&status)) != -1)
+		{
+			debug("Child closed");
 			fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
+		}
 }
 
 
