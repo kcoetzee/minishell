@@ -9,7 +9,7 @@ SRC = libft/ft_atoi.c libft/ft_bzero.c libft/ft_free_array.c libft/ft_isalnum.c 
 	libft/ft_strmapi.c libft/ft_strncat.c libft/ft_strncmp.c libft/ft_strncpy.c libft/ft_strnequ.c\
 	libft/ft_strnew.c libft/ft_strnstr.c libft/ft_strrchr.c libft/ft_strsplit.c libft/ft_strstr.c\
 	libft/ft_strsub.c libft/ft_strtrim.c libft/ft_tolower.c libft/ft_toupper.c ft_addchar.c\
-	get_next_line.c launch_program.c minishell.c remove_quotes.c builtins/ft_unset_env.c\
+	get_next_line.c launch_program.c minishell.c remove_quotes.c builtins/unsetenv.c\
 	ft_load_list.c command_list.c get_env.c builtins/echo.c builtins/cd.c builtins/setenv.c\
 	builtins/env.c builtins/exit.c
 
