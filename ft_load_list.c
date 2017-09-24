@@ -15,10 +15,15 @@
 
 void	ft_free_list(t_env *list)
 {
-	while (list->next)
+	t_env	*tempc;
+	while(list->next)
 	{
-		
+		free(list->str);
+		tempc = list->next;
+		free(list);
+		list = tempc;
 	}
+	//free(tempc);
 }
 
 t_env	*ft_load_list(char **env)

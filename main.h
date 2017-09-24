@@ -62,6 +62,9 @@ char	**list_to_arr(t_env *list);
 char	*ft_get_env(char *key, t_env *list);
 int		pos_equal(char *str);
 
+
+void	ft_free_list(t_env *list);
+
 /*
 ** builtin programs
 */

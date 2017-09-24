@@ -87,11 +87,15 @@ void		destroy_list(t_command *list)
 	{
 			while(list->args->next)
 			{
+				// free up the other parameters 
+				free(list->args->str);
 				tempa = list->args->next;
 				free(list->args);
 				list->args = tempa;			
 			}
 			free(tempa);
+			free(list->file_name);
+			free(list->terminator);
 			tempc = list->next;
 			free(list);
 			list = tempc;

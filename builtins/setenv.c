@@ -28,13 +28,13 @@ int		list_len(t_env *list)
 	return (i);
 }
 
+
 char	**list_to_arr(t_env *list)
 {
 	int		len;
 	int		i;
 	int		j;
 	char	**arr;
-	t_env	*head;
 
 	i = 0;
 	j = -1;
@@ -48,12 +48,6 @@ char	**list_to_arr(t_env *list)
 	}
 	return (arr);
 }
-
-/*
-** before return in above function do we still need?
-** while (arr[++j])
-** printf("%d: %s\n", j, arr[j]);
-*/
 
 int		pos_equal(char *str)
 {
@@ -69,6 +63,7 @@ int		pos_equal(char *str)
 t_env	*ft_set_env(char *key, char *value, t_env *list)
 {
 	int		len;
+	char	*join;
 	char	*str;
 	t_env	*head;
 
@@ -80,15 +75,29 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 	{
 		if (ft_strncmp(list->str, str, pos_equal(list->str)) == 0)
 		{
-			str = ft_strjoin(str, value);
-			list->str = ft_strdup(str);
+			join = ft_strjoin(str, value); 
+			debug("Freeing str and value");
+			list->str = ft_strdup(join);
+
+			free(join);	
+			free(str);
+			free(value);
 			return (head);
 		}
 		list = list->next;
 	}
-	str = ft_strjoin(str, value);
-	list->str = ft_strdup(str);
+	join = ft_strjoin(str, value);
+	//list->str = ft_strdup(join);
+	//list->next = (t_env*)malloc(sizeof(t_env));
+	
 	list->next = (t_env*)malloc(sizeof(t_env));
+	list->str = ft_strdup(join);
+	list->next->next = NULL;
+	//list->next = NULL;
+
+	free(join);
+	free(str);
+	free(value);
 	return (head);
 }
 int		run_builtin_setenv(t_command *command, char ***envp)
@@ -96,9 +105,9 @@ int		run_builtin_setenv(t_command *command, char ***envp)
 	char	*result;
 	t_env	*list;
 
-	list = ft_load_list(*envp);
-	list = ft_set_env(command->args->str, command->args->next->str, list);
-	*envp = list_to_arr(list);
-
+	list = ft_load_list(*envp); // freed
+	list = ft_set_env(command->args->str, command->args->next->str, list); // freed
+	*envp = list_to_arr(list); 
+	//ft_free_list(list);	
 	return (1);
 }

@@ -122,14 +122,14 @@ int	try_launch_builtins(t_command *command, char ***envp)
 	if (ft_strequ(command->file_name, "echo")) 
 		return(run_builtin_echo(command, *envp)); 
 	else if(ft_strequ(command->file_name, "cd"))
-		return (run_builtin_cd(command, envp)); // busy
+		return (run_builtin_cd(command, envp)); 
 	else if (ft_strequ(command->file_name, "env"))
 		return (run_builtin_env(command, *envp));
 	else if (ft_strequ(command->file_name, "exit"))
 			run_builtin_exit();
-	else if (ft_strequ(command->file_name, "setenv"))
+	else if (ft_strequ(command->file_name, "setenv")) 
 		return(run_builtin_setenv(command, envp));
-	else if (ft_strequ(command->file_name, "unsetenv"))
+	else if (ft_strequ(command->file_name, "unsetenv")) // busy
 		return (run_builtin_unsetenv(command, envp));
 	return (0);
 }
@@ -140,14 +140,14 @@ void	launch_program(t_command *command, char ***envp)
 	if (command->file_name[0] == '/')
 	{
 		//	-- launch_absolute_path
-		execvp(command->file_name, arg_list_to_arr(command->args, command));
+		execve(command->file_name, arg_list_to_arr(command->args, command), *envp);
 		printf("Invalid path or filename. \n");
 		exit(0);
 	}
 	//	else try launch_path_var
 	else if (try_launch_path(command, *envp) == 0)
 	{
-		execvp(command->file_name, arg_list_to_arr(command->args, command));
+		execve(command->file_name, arg_list_to_arr(command->args, command), *envp);
 		printf("Invalid path or filename. \n");
 		exit(0);
 	}

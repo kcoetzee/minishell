@@ -195,5 +195,6 @@ void	input_loop(char **argv, char **envp)
 
 int		main(int argc, char **argv, char *envp[])
 {
+	fprintf(stderr, "PID: %d",(int)getpid());
 	input_loop(argv, envp);
 }
