@@ -38,7 +38,8 @@ static char			*get_word(char const *str, char c, int *i)
 	char	*s;
 
 	k = 0;
-	s = (char *)malloc(sizeof(s) * (ft_strlen((char *)str)));
+	//s = (char *)malloc(sizeof(s) * (ft_strlen((char *)str)));
+	s = ft_strnew(ft_strlen(str));
 	if (!s)
 		return (NULL);
 	while (str[*i] != c && str[*i])
@@ -53,7 +54,7 @@ static char			*get_word(char const *str, char c, int *i)
 	return (s);
 }
 
-char				**ft_strsplit(char const *s, char c)
+char	**ft_strsplit(char const *s, char c)
 {
 	int		i;
 	int		j;
@@ -77,4 +78,16 @@ char				**ft_strsplit(char const *s, char c)
 	}
 	str[j] = NULL;
 	return (str);
+}
+
+void	free_strsplit(char **arr)
+{
+	int i;
+
+	i = -1;
+	while (arr[++i])
+	{
+		free(arr[i]);
+	}
+	free(arr);
 }

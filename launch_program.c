@@ -118,13 +118,11 @@ int		execute_builtin(t_command *command, int fd[])
 }
 
 int	try_launch_builtins(t_command *command, char ***envp)
-{
-	
-	fprintf(stderr, "Trying to run builtin: $%s$\n", command->file_name);
-	if (ft_strequ(command->file_name, "echo"))
-		return(run_builtin_echo(command, *envp));
+{	
+	if (ft_strequ(command->file_name, "echo")) 
+		return(run_builtin_echo(command, *envp)); 
 	else if(ft_strequ(command->file_name, "cd"))
-		return (run_builtin_cd(command, envp));
+		return (run_builtin_cd(command, envp)); // busy
 	else if (ft_strequ(command->file_name, "env"))
 		return (run_builtin_env(command, *envp));
 	else if (ft_strequ(command->file_name, "exit"))

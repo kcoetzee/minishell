@@ -133,7 +133,7 @@ int	run_builtin_cd(t_command *command, char ***envp)
 	t_env *list;
 	int		ret;
 
-	list = ft_load_list(*envp);
+	list = ft_load_list(*envp); // busy
 	home_path = ft_get_env("HOME", list);	
 	fflush(stdout);
 	if (command->args->str == NULL)

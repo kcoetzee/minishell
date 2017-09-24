@@ -78,6 +78,27 @@ int	ft_arr_len(char	**argv)
 	return (i);
 }
 
+void		destroy_list(t_command *list)
+{
+	t_command	*tempc;
+	t_args		*tempa;
+
+	while(list->next)
+	{
+			while(list->args->next)
+			{
+				tempa = list->args->next;
+				free(list->args);
+				list->args = tempa;			
+			}
+			free(tempa);
+			tempc = list->next;
+			free(list);
+			list = tempc;
+	}
+	free(tempc);
+}
+
 t_command	*create_list(char **input)
 {
 	int		i;

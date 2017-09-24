@@ -43,7 +43,6 @@ char	*format_input_string(char *line)
 	int j;
 	char *result;
 	
-	fprintf(stderr, "FORMAT INPUT_STRING\n");
 	result = ft_strnew(ft_strlen(line) + 10);
 	i = 0;
 	j = 0;
@@ -80,6 +79,7 @@ char	*format_input_string(char *line)
 void	process_input(char ***envp, char *input)
 {
 	char **args;
+	t_command *head;
 	t_command *list;	
 	int	new_fd[2];
 	int old_fd[2];
@@ -88,15 +88,17 @@ void	process_input(char ***envp, char *input)
 	t_command *prev;
 
 	
-	args = ft_strsplit(input, ' ');
-	list = create_list(args);
+	args = ft_strsplit(input, ' '); //freed
+	list = create_list(args); // freed
+	head = list;
+	free_strsplit(args);
 	prev = NULL;
 
 
 	while (list->next != NULL)
 	{
 		/// First check if it's a builtin
-		if (try_launch_builtins(list, envp))
+		if (try_launch_builtins(list, envp)) // busy
 		{
 			list = list->next;
 			break ;
@@ -150,12 +152,17 @@ void	process_input(char ***envp, char *input)
 	close(old_fd[0]);
 	close(old_fd[1]);
 
+	if (pid == 1)
+	{
+		destroy_list(head);
+	}	
 
 		while ((pid = wait(&status)) != -1)
 		{
 			debug("Child closed");
 			fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
 		}
+
 }
 
 

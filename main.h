@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include "libft.h"
+# include "libft/libft.h"
 
 /*
 ** fix this struct and s_env not separated by a single space.
@@ -86,4 +86,12 @@ t_command	*create_list(char **input);
 void	execute_command_pipe(t_command *command, int fd[], char **envp, int state);
 void	execute_command(t_command *command, char **envp);
 
+
+void		destroy_list(t_command *list);
+
+/*
+**	NORMAL FUKIN UNITLS
+*/
+
+void	free_strsplit(char **arr);
 #endif
