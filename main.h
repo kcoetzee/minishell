@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:47:05 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/24 08:49:02 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/24 08:54:27 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	run_builtin_cd(t_command *command, char ***envp);
 void	run_builtin_setenv(char **args, char ***envp);
 void	run_builtin_unsetenv(char **args, char ***envp);
 int		run_builtin_env(t_command *command, char **envp);
-void	run_builtin_exit(char **args, char **envp);
+void	run_builtin_exit(void);
 char	*ft_strtrim_delim(char const *s, char delim);
 char	*remove_quotes(char *str);
 int	try_launch_builtins(t_command *command, char ***envp);

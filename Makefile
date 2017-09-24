@@ -11,7 +11,7 @@ SRC = libft/ft_atoi.c libft/ft_bzero.c libft/ft_free_array.c libft/ft_isalnum.c 
 	libft/ft_strsub.c libft/ft_strtrim.c libft/ft_tolower.c libft/ft_toupper.c ft_addchar.c\
 	get_next_line.c launch_program.c minishell.c remove_quotes.c ft_unset_env.c\
 	ft_set_env.c ft_load_list.c command_list.c get_env.c builtins/echo.c builtins/cd.c\
-	builtins/env.c
+	builtins/env.c builtins/exit.c
 
 NAME = minishell
 

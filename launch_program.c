@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:53:51 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/24 08:48:16 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/24 08:54:10 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ int	try_launch_builtins(t_command *command, char ***envp)
 		return (run_builtin_cd(command, envp));
 	else if (ft_strequ(command->file_name, "env"))
 		return (run_builtin_env(command, *envp));
-
+	else if (ft_strequ(command->file_name, "exit"))
+			run_builtin_exit();
 	return (0);
 }
 
