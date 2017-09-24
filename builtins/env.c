@@ -6,13 +6,14 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 10:30:19 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/18 10:30:21 by lchant           ###   ########.fr       */
+/*   Updated: 2017/09/24 08:48:26 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
 
-void	run_builtin_env(char **argv, char **envp)
+int		run_builtin_env(t_command *command, char **envp)
 {
 	debug_print_env(envp);
+	return (1);
 }
