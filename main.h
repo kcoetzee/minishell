@@ -20,12 +20,11 @@
 # include <stdlib.h>
 # include "libft/libft.h"
 
-/*
-** fix this struct and s_env not separated by a single space.
-*/
 
 typedef	struct	s_command t_command;
 typedef	struct	s_args t_args;
+typedef struct	s_heap t_heap; 
+
 
 struct	s_args
 {
@@ -48,6 +47,8 @@ struct				s_env
 	char			*str;
 	struct s_env	*next;
 };
+
+
 
 /*
 ** vaughan environment functions
@@ -83,6 +84,7 @@ int	try_launch_builtins(t_command *command, char ***envp);
 */
 void	debug(char *str);
 void	debug_print_env(char **envp);
+void	test_memory_manager(void);
 
 char	*arg_list_to_line(t_args *list);
 char	**arg_list_to_arr(t_args *list, t_command *cmd_list);
@@ -98,5 +100,6 @@ char	**command_to_array(t_command *cmd);
 **	NORMAL FUKIN UNITLS
 */
 
+void	add_to_stack(void *memory);
 void	free_strsplit(char **arr);
 #endif

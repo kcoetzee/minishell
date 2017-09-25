@@ -1,5 +1,5 @@
 SRC = launch_program.c minishell.c remove_quotes.c builtins/unsetenv.c builtins/setenv.c ft_load_list.c\
-	command_list.c get_env.c builtins/echo.c builtins/cd.c builtins/exit.c builtins/env.c
+	command_list.c get_env.c builtins/echo.c builtins/cd.c builtins/exit.c builtins/env.c memory_check.c
 
 NAME = minishell
 

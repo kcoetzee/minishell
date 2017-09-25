@@ -16,8 +16,19 @@ char	*ft_strnew(size_t size)
 {
 	char	*new;
 
-	new = (char *)malloc(size * sizeof(char) + 1);
+	new = (char *)e_malloc(size * sizeof(char) + 1);
 	if (new == NULL)
 		return (NULL);
 	return (ft_memset(new, '\0', size + 1));
 }
+
+/*
+char	*ft_strnew(size_t size)
+{
+	char	*new;
+
+	new = (char *)malloc(size * sizeof(char) + 1);
+	if (new == NULL)
+		return (NULL);
+	return (ft_memset(new, '\0', size + 1));
+}*/

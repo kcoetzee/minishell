@@ -232,21 +232,18 @@ void	input_loop(char **argv, char **envp)
 	{
 		if (line != NULL)
 		{
-			//if (!ft_strchr(line, '\t'))
-			//{
-				format = format_input_string(line); // busy
-				process_input(&envp, format);
-				ft_putstr("【ツ】>: ");
-				free(line);
-				free(format);
-			//}
+			format = format_input_string(line); // busy
+			process_input(&envp, format);
+			ft_putstr("【ツ】>: ");
+			free(line);
+			free(format);
 		}
 	}
 }
 
 
-
 int		main(int argc, char **argv, char *envp[])
 {
+	init_heap();
 	input_loop(argv, envp);
 }

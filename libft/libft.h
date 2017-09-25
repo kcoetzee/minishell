@@ -17,12 +17,29 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+
+typedef struct	s_heap t_heap;
+
 typedef struct		s_list
 {
 	void			*content;
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+
+struct	s_heap
+{
+	void	*address;
+	t_heap	*next;
+} heap;
+
+
+void	init_heap();
+void	*e_malloc(int size);
+void	print_heap();
+void	heap_push(void *address);
+void	free_heap();
 
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
