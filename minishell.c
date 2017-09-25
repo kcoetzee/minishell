@@ -29,52 +29,107 @@ void	debug(char *str)
 	ft_putchar('\n');
 }
 
-int		is_command_terminator(char c)
+int	is_opp(char c)
 {
-	if (c == '|' || c == '>' || c == ';' || c == '<')
-		return (1);
-	else 
-		return (0);	
+	int	i;
+	char	*opps;
+	char	**arr;
+
+	i = 0;
+	opps = ";,>,<,|,&";
+	arr = ft_strsplit(opps, ',');
+	while (arr[i] && c != arr[i][0])
+		i++;
+	if (arr[i] &&  c == arr[i][0])
+	{
+		//free_arr(arr); NEED TO FREE THE ARRAY CREATED BY FT_STRSPLIT
+		return(1);
+	}
+	//free_arr(arr); NEED TO FREE THE ARRAY CREATED BY FT_STRSPLIT
+	return(0);
 }
 
+char	*remove_tabs(char *line)
+{
+		int 	i;
+		char	*newstr;
 
+		i = 0;
+		newstr = ft_strnew(sizeof(char));//using ft_strnew cause malloc fucking sucks
+		while(line[i])
+		{
+			if (line[i] == '\t')
+			{
+				newstr = ft_addchar(newstr, ' ');
+				while(line[i] && line[i] == '\t')
+					i++;
+			}
+			newstr = ft_addchar(newstr, line[i]);
+			i++;
+		}
+		return(newstr);
+}
+
+char	*format_opp(char *line)
+{
+	int		i;
+	int		j;
+	char	*newstr;	
+
+	i = 0;
+	newstr = ft_strnew(sizeof(char));
+	while(line[i])
+	{
+		j = i;
+		if (is_opp(line[j]) == 1)
+		{
+			newstr = ft_addchar(newstr, ' ');
+			while (line[j] && is_opp(line[j]) == 1)
+			{
+				newstr = ft_addchar(newstr, line[j]);
+				j++;
+			}
+			newstr = ft_addchar(newstr, ' ');
+			i = j;
+		}
+		newstr = ft_addchar(newstr, line[i]);
+		i++;
+	}
+	free(line);
+	return(newstr);
+}
 
 char	*format_input_string(char *line)
 {
-	int i;
-	int j;
-	char *result;
-	
-	result = ft_strnew(ft_strlen(line) + 10);
+	int		i;
+	int		j;
+	char	*trimmed;
+	char	*newstr;
+
 	i = 0;
 	j = 0;
-	while (line[i] && line[i] == ' ')
-			i++;
-	while (line[i])
+	trimmed = ft_strnew(sizeof(char));
+	trimmed = remove_tabs(line);
+	trimmed = ft_strtrim(trimmed);
+	trimmed = format_opp(trimmed);
+	newstr = ft_strnew(sizeof(char));
+	while (trimmed[i])
 	{
-		if (line[i - 1] && line[i - 1] == ' ' && line[i] == ' ')
-		{	
+		while (trimmed[i] != ' ' && trimmed[i])
+		{
+			newstr = ft_addchar(newstr, trimmed[i]);
 			i++;
-		} 
-		else if (line[i + 1] && is_command_terminator(line[i + 1]) && line[i] != ' ')
-		{
-			result[j++] = line[i++];
-			result[j++] = ' ';
 		}
-		else if (line[i + 1] && is_command_terminator(line[i]) && line[i + 1] != ' ')
+		if (trimmed[i] == ' ')
 		{
-			result[j++] = line[i++];
-			result[j++] = ' ';
-		}	
-		else
-		{	
-			result[j] = line[i];
-			j++;
-			i++;	
+			newstr = ft_addchar(newstr, trimmed[i]);
+			while(trimmed[i] == ' ' && trimmed[i])
+				i++;
 		}
 	}
-	fprintf(stderr, "line: $%s$\n", result);	
-	return (result);
+	fprintf(stderr, "FORMATTED STRING: %s\n", newstr);
+	free(trimmed);
+	return(newstr); 
 }
 
 void	process_input(char ***envp, char *input)
@@ -97,7 +152,7 @@ void	process_input(char ***envp, char *input)
 
 	while (list)
 	{
-		/// First check if it's a builtin
+		/// First check if it's a builtin*
 		if (try_launch_builtins(list, envp))
 		{
 			list = list->next;
