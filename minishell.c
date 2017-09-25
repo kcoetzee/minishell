@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 12:41:17 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/25 13:45:34 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 13:50:57 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void	process_input(char ***envp, char *input)
 	t_command *prev;
 
 	
-	args = ft_strsplit(input, ' '); //freed
-	list = create_command_list(args); // freed
+	args = ft_strsplit(input, ' '); 
+	list = create_command_list(args); 
 	head = list;
 	free_strsplit(args);
 	prev = NULL;
@@ -98,7 +98,7 @@ void	process_input(char ***envp, char *input)
 	while (list)
 	{
 		/// First check if it's a builtin
-		if (try_launch_builtins(list, envp)) // busy
+		if (try_launch_builtins(list, envp))
 		{
 			list = list->next;
 			break ;

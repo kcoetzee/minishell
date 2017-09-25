@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:47:05 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/25 10:58:05 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 15:03:45 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ char	*ft_addchar(char *str, char c);
 char	**list_to_arr(t_env *list);
 char	*ft_get_env(char *key, t_env *list);
 int		pos_equal(char *str);
-
-
+t_env	*ft_create_env_list(char **env);
+void	debug_print_env_list(t_env *env);
+char	**env_list_to_arr(t_env *list);
 void	ft_free_list(t_env *list);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 10:31:44 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/25 13:12:32 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 14:30:40 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	change_dir_absolute(char **argv, char **envp)
 	t_env	*list;
 
 	path = argv[1];
-	list = ft_load_list(envp);
+	list = ft_create_env_list(envp);
 	if (argv[1] == 0)
 	{
 		debug("NO ARGUMENTS");
@@ -100,7 +100,7 @@ int	try_cd_path(t_command *command, char **envp)
 	int		found;
 	t_env	*list;
 
-	list = ft_load_list(envp);
+	list = ft_create_env_list(envp);
 	path = ft_get_env("PATH", list);
 	if (path == NULL)
 		return (0);
@@ -133,7 +133,7 @@ int	run_builtin_cd(t_command *command, char ***envp)
 	t_env *list;
 	int		ret;
 
-	list = ft_load_list(*envp); // busy
+	list = ft_create_env_list(*envp); // busy
 	home_path = ft_get_env("HOME", list);	
 	fflush(stdout);
 	if (command->args == NULL)

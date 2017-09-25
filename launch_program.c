@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:53:51 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/25 13:12:32 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 14:28:21 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	try_launch_path(t_command *command, char **envp)
 	t_env	*list;
 
 
-	list = ft_load_list(envp);
+	list = ft_create_env_list(envp);
 	path = ft_get_env("PATH", list);
 	path_list = ft_strsplit(path, ':');
 	i = 0;
