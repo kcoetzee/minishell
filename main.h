@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:47:05 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/24 09:17:30 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 10:58:05 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,14 @@ void	debug_print_env(char **envp);
 
 char	*arg_list_to_line(t_args *list);
 char	**arg_list_to_arr(t_args *list, t_command *cmd_list);
-t_command	*create_list(char **input);
 void	execute_command_pipe(t_command *command, int fd[], char **envp, int state);
 void	execute_command(t_command *command, char **envp);
 
 
-void		destroy_list(t_command *list);
-
+void	print_command_list(t_command *command_list);
+void		destroy_command_list(t_command *list);
+t_command	*create_command_list(char **input);
+char	**command_to_array(t_command *cmd);
 /*
 **	NORMAL FUKIN UNITLS
 */

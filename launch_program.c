@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:53:51 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/24 09:13:31 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 11:31:49 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		try_launch_absolute(char **args, char **envp)
 		ft_putstr("Command invalid.\n");
 		exit(0);
 	}
+	return (0);
 }
 
 /*
@@ -61,6 +62,7 @@ int	try_launch_path(t_command *command, char **envp)
 	int		found;
 	t_env	*list;
 
+
 	list = ft_load_list(envp);
 	path = ft_get_env("PATH", list);
 	path_list = ft_strsplit(path, ':');
@@ -72,11 +74,8 @@ int	try_launch_path(t_command *command, char **envp)
 	{
 		path_list[i] = ft_strjoin(path_list[i], "/");
 		path_list[i] = ft_strjoin(path_list[i], command->file_name);	
-		//path_list[i] = ft_strjoin(path_list[i], " ");
-		//path_list[i] = ft_strjoin(path_list[i], arg_list_to_line(command->args));
 		path_list[i] = remove_quotes(path_list[i]);
-	
-		if ((execve(path_list[i], arg_list_to_arr(command->args, command), envp) != -1))
+		if ((execve(path_list[i], command_to_array(command), envp) != -1))	
 		{
 			found = 1;
 		}
@@ -88,6 +87,7 @@ int	try_launch_path(t_command *command, char **envp)
 		exit(0);
 		return (0);
 	}
+	return (0);
 }
 
 /*
@@ -118,7 +118,8 @@ int		execute_builtin(t_command *command, int fd[])
 }
 
 int	try_launch_builtins(t_command *command, char ***envp)
-{	
+{
+	debug("try_launch_builtins");
 	if (ft_strequ(command->file_name, "echo")) 
 		return(run_builtin_echo(command, *envp)); 
 	else if(ft_strequ(command->file_name, "cd"))
@@ -140,14 +141,14 @@ void	launch_program(t_command *command, char ***envp)
 	if (command->file_name[0] == '/')
 	{
 		//	-- launch_absolute_path
-		execve(command->file_name, arg_list_to_arr(command->args, command), *envp);
+		execve(command->file_name, command_to_array(command), *envp);
 		printf("Invalid path or filename. \n");
 		exit(0);
 	}
 	//	else try launch_path_var
 	else if (try_launch_path(command, *envp) == 0)
-	{
-		execve(command->file_name, arg_list_to_arr(command->args, command), *envp);
+	{	
+		execve(command->file_name, command_to_array(command), *envp);
 		printf("Invalid path or filename. \n");
 		exit(0);
 	}

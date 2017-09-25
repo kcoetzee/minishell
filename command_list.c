@@ -16,56 +16,68 @@ int	check_opp(char *str)
 	return (0);
 }
 
-char	**arg_list_to_arr(t_args *list, t_command *cmd_list)
+void	debug_print_arr(char **arg)
 {
-	char	*args;
-	char	**newstr;
+	int i = 0;
 
-	args = ft_strjoin(cmd_list->file_name, " ");
-	args = ft_strjoin(args, arg_list_to_line(list));
-	newstr = ft_strsplit(args, ' ');
-	return(newstr);
-}
-
-char	*arg_list_to_line(t_args *list)
-{
-	char	*newstr;
-	newstr = (char*)malloc(sizeof(char));
-	
-	while(list->next)
+	ft_putstr("DEBUG: print_arr\n");
+	while (arg[i])
 	{
-		newstr = ft_strjoin(newstr, list->str);
-		newstr = ft_strjoin(newstr, " ");
-		list = list->next;
+		ft_putstr(arg[i]);
+		ft_putstr(",");
+		i++;
 	}
-	return(newstr);
+	ft_putstr("\n===================\n");
+	
 }
 
-void	print_list(t_command *list)
+char	**command_to_array(t_command *cmd)
+{
+	char 		**result;
+	char  		*line;
+	t_command	*itt;
+	t_args		*args;
+
+	itt = cmd;
+	args = cmd->args;
+	line = ft_strdup(itt->file_name);
+	line = ft_addchar(line, ' ');
+
+	while (args != NULL)
+	{
+		line = ft_strjoin(line, args->str);
+		line = ft_addchar(line, ' ');
+		args = args->next;
+	}
+	
+	result = ft_strsplit(line, ' ');
+	return (result);
+}
+
+void	print_command_list(t_command *command_list)
 {
 	int	i;
+	t_command	*list;
+	t_args		*args;
 
+	list = command_list;
 	while (list)
 	{
+		args = list->args;
+		debug("--------------------------------------------");
 		i = 0;
-		printf("FILE_NAME: %s\n", list->file_name);
-		while(list->args)
+		printf("FILE_NAME: $%s$\n", list->file_name);
+		while(args)
 		{
-			printf("ARG%d: %s\n", i, list->args->str);
-			list->args = list->args->next;
+			printf("ARG%d: $%s$\n", i, args->str);
+			args = args->next;
+			i++;
 		}
-		printf("TERMINATOR: %s\n", list->terminator);
+		printf("TERMINATOR: $%s$\n", list->terminator);
 		printf("NEXT: %p\n", list->next);
 		list = list->next;
-	}
-}
-
-t_command	*add_terminator(char *terminator, t_command *list)
-{
-	list->terminator = ft_strdup(terminator);
-	list->next = (t_command*)malloc(sizeof(t_command));
-	list = list->next;
-	return (list);
+	}	
+	debug("--------------------------------------------");
 }
 
 int	ft_arr_len(char	**argv)
@@ -78,8 +90,11 @@ int	ft_arr_len(char	**argv)
 	return (i);
 }
 
-void		destroy_list(t_command *list)
+void		destroy_command_list(t_command *list)
 {
+
+	//TODO: Rewrite this function
+	return ;
 	t_command	*tempc;
 	t_args		*tempa;
 
@@ -103,40 +118,77 @@ void		destroy_list(t_command *list)
 	free(tempc);
 }
 
-t_command	*create_list(char **input)
-{
-	int		i;
-	int		len;
-	t_args		*ahead;
-	t_command	*list;
-	t_command	*lhead;
 
-	i = 0;
-	list = (t_command*)malloc(sizeof(t_command));
-	lhead = list;
-	len = ft_arr_len(input);
-	while (i < len)
-	{
-		list->file_name = ft_strdup(input[i++]);
-		list->args = (t_args*)malloc(sizeof(t_args));
-		ahead = list->args;
-		if (i <= len)
-		{
-			while(input[i] && check_opp(input[i]) != 1)
-			{
-				list->args->str = ft_strdup(input[i]);
-				list->args->next = (t_args*)malloc(sizeof(t_args));
-				list->args = list->args->next;
-				i++;
-			}
-			list->args = ahead;
-			if (i >= len)
-				list = add_terminator("EOF", list);
-		}
-		if (i < len)
-			list = add_terminator(input[i], list);
-		i++;
+static	t_args		*create_arg_list(char **input, t_command *cur_command, int *index)
+{
+	t_args	*head;
+	t_args	*itt;
+
+	if (input[*index] == 0){
+		cur_command->terminator = ft_strdup("EOF");
+		return (NULL);
 	}
-	list->next = NULL;
-	return (lhead);
+	else if (check_opp(input[*index])){
+		cur_command->terminator = ft_strdup(input[(*index)++]);
+		return (NULL);
+	}
+	
+	head = (t_args*)malloc(sizeof(t_args));
+	head->str = ft_strdup(input[(*index)++]);
+	
+	head->next = NULL;
+	itt = head;
+
+	while (input[*index] && check_opp(input[*index]) != 1)
+	{
+		itt->next = (t_args*)malloc(sizeof(t_args));	
+		itt = itt->next;
+		itt->str = ft_strdup(input[*index]);	
+		itt->next = NULL;
+		//itt = itt->next;
+		(*index)++;
+	}
+	if (input[*index] != 0) // This means the loop exited because an operation was found
+		cur_command->terminator = ft_strdup(input[(*index)++]);
+	else
+		cur_command->terminator = ft_strdup("EOF");
+	return (head);
 }
+
+t_command	*create_command_list(char **input)
+{
+	int 		i;
+	int 		len;
+	t_command	*head;
+	t_command	*itt;
+	
+	len = ft_arr_len(input);
+	fprintf(stderr, "create_command_list: arr_len = %d\n", len);
+	i = 0;
+	if (input[i] == 0)
+	{
+		return (NULL);
+	}
+	
+	head = (t_command*)malloc(sizeof(t_command));		
+	head->file_name = ft_strdup(input[i++]);
+	head->args = create_arg_list(input, head, &i);
+	head->next = NULL;
+
+	itt = head;
+	while (input[i])
+	{
+		itt->next = (t_command*)malloc(sizeof(t_command));
+		itt = itt->next;
+		itt->file_name = ft_strdup(input[i++]);
+		itt->args = create_arg_list(input, itt, &i);
+		itt->next = NULL;
+		//itt = itt->next;
+		//i++;	
+	}
+
+	fprintf(stderr, "input: %s\n", input[i-1]); 
+	print_command_list(head);
+	return (head);
+}
+
