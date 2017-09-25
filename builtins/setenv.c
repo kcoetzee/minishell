@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:08:11 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/25 15:09:57 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 15:21:58 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,6 @@ char	**env_list_to_arr(t_env *list)
 	}
 	return (result);
 }
-/*
-char	**list_to_arr(t_env *list)
-{
-	int		len;
-	int		i;
-	int		j;
-	char	**arr;
-
-	i = 0;
-	j = -1;
-	len = list_len(list);
-	arr = (char**)malloc(sizeof(char*) * len);
-	while (list->next)
-	{
-		arr[i] = ft_strdup(list->str);
-		i++;
-		list = list->next;
-	}
-	return (arr);
-}*/
 
 int		pos_equal(char *str)
 {
@@ -93,19 +73,19 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 	head = list;
 	while (itt->next != NULL)
 	{
-		if (ft_strncmp(itt->str, str, pos_equal(itt->str)) == 0)
+		if (ft_strncmp(itt->next->str, str, pos_equal(itt->next->str)) == 0)
 		{
 			join = ft_strjoin(str, value); 
-			debug("Freeing str and value");
-			itt->str = ft_strdup(join);
+			itt->next->str = ft_strdup(join);
 
-			//free(join);	
-			//free(str);
-			//free(value);
-			return (head);
+			free(join);	
+			free(str);
+			free(value);
+			return (list);
 		}
 		itt = itt->next;
 	}
+
 	itt->next = (t_env*)malloc(sizeof(t_env));
 	join = ft_strjoin(str, value);
 	itt->next->str = ft_strdup(join);
@@ -118,9 +98,9 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 	//list->next->next = NULL;
 	//list->next = NULL;
 
-	//free(join);
-	//free(str);
-	//free(value);
+	free(join);
+	free(str);
+	free(value);
 	//debug_print_env_list(list);
 	return (list);
 }
@@ -131,7 +111,6 @@ int		run_builtin_setenv(t_command *command, char ***envp)
 
 	list = ft_create_env_list(*envp); // freed		
 	list = ft_set_env(command->args->str, command->args->next->str, list); // freed
-	//debug_print_env_list(list);
 	*envp = env_list_to_arr(list); 
 	ft_free_list(list);	
 	return (1);
