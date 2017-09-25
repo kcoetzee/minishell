@@ -158,6 +158,7 @@ void	process_input(char ***envp, char *input)
 			list = list->next;
 			break ;
 		}
+		//check if opereator terminator
 		// Piping
 		if (list->terminator[0] == '|')
 		{
