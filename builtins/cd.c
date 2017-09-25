@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 10:31:44 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/24 08:47:59 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 12:33:24 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int	run_builtin_cd(t_command *command, char ***envp)
 	list = ft_load_list(*envp); // busy
 	home_path = ft_get_env("HOME", list);	
 	fflush(stdout);
-	if (command->args->str == NULL)
+	if (command->args == NULL)
 	{
 		if (home_path == NULL)
 			fprintf(stderr, "HOME directory not set and no directory operatives\n");
@@ -180,37 +180,3 @@ int	run_builtin_cd(t_command *command, char ***envp)
 
 	return (1);
 }
-
-/*void	run_builtin_cd(char **argv, char **envp)
-{
-	char	*program_name;
-	int		num_args;
-	int		ret;
-	char	*path;
-
-	if (argv[1] == 0 || argv[1][0] == '/' ||
-		argv[1][0] == '~' || argv[1][0] == '-')
-	{
-		debug("printing");
-		change_dir_absolute(argv, envp);
-		return ;
-	}
-	path = (char*)malloc(sizeof(char) * 255);
-	path = getcwd(path, 255);
-	if (argv[1][0] != '/')
-		path = ft_strjoin(path, "/");
-	printf("Current path: %s\n", path);
-	printf("New path: %s\n", ft_strjoin(path, argv[1]));
-	if (ret = chdir(ft_strjoin(path, argv[1])))
-	{
-		ft_putstr("Directory does not exist or insufficient permission.\n");
-	}
-}*/
-/*
-** t_env *list = ft_load_list(envp);
-** list = ft_set_env("PWD", argv[1], list);
-** envp = list_to_arr(list);
-** num_args = get_num_args(argv);
-** printf("Num args: %d\n", num_args);
-** debug_print_env(envp);
-*/

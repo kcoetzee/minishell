@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 12:41:17 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/25 11:34:51 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 12:56:52 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int		is_command_terminator(char c)
 	else 
 		return (0);	
 }
+
+
 
 char	*format_input_string(char *line)
 {
@@ -175,14 +177,14 @@ void	input_loop(char **argv, char **envp)
 	{
 		if (line != NULL)
 		{
-			if (!ft_strchr(line, '\t'))
-			{
+			//if (!ft_strchr(line, '\t'))
+			//{
 				format = format_input_string(line);
 				process_input(&envp, format);
 				ft_putstr("【ツ】>: ");
 				free(line);
 				free(format);
-			}
+			//}
 		}
 	}
 }
