@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 12:41:17 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/25 12:56:52 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/25 13:45:34 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ char	*format_input_string(char *line)
 			i++;	
 		}
 	}
-	line[i] = '\0';
 	fprintf(stderr, "line: $%s$\n", result);	
 	return (result);
 }
@@ -151,9 +150,9 @@ void	process_input(char ***envp, char *input)
 	close(old_fd[0]);
 	close(old_fd[1]);
 
-	if (pid == 1)
+	if (pid != 0)
 	{
-		//destroy_command_list(head);
+		destroy_command_list(head);
 	}	
 
 	while ((pid = wait(&status)) != -1)
@@ -179,7 +178,7 @@ void	input_loop(char **argv, char **envp)
 		{
 			//if (!ft_strchr(line, '\t'))
 			//{
-				format = format_input_string(line);
+				format = format_input_string(line); // busy
 				process_input(&envp, format);
 				ft_putstr("【ツ】>: ");
 				free(line);

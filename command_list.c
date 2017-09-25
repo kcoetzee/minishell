@@ -90,33 +90,33 @@ int	ft_arr_len(char	**argv)
 	return (i);
 }
 
+
 void		destroy_command_list(t_command *list)
 {
+	t_command	*tmp;
+	t_args		*temp_arg;
 
-	//TODO: Rewrite this function
-	return ;
-	t_command	*tempc;
-	t_args		*tempa;
+	fprintf(stderr, "destroy_command_list\n");
 
-	while(list->next)
+	while (list != NULL)
 	{
-			while(list->args->next)
-			{
-				// free up the other parameters 
-				free(list->args->str);
-				tempa = list->args->next;
-				free(list->args);
-				list->args = tempa;			
-			}
-			free(tempa);
-			free(list->file_name);
-			free(list->terminator);
-			tempc = list->next;
-			free(list);
-			list = tempc;
+		tmp = list;
+		free(list->file_name);
+		free(list->terminator);
+		
+		while (list->args != NULL)
+		{
+			temp_arg = list->args;
+			free(list->args->str);
+			list->args = list->args->next;
+			free(temp_arg);
+		}
+
+		list = list->next;
+		free(tmp);
 	}
-	free(tempc);
 }
+
 
 
 static	t_args		*create_arg_list(char **input, t_command *cur_command, int *index)
