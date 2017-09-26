@@ -9,7 +9,7 @@ FLAGS = -Wall -Wextra -Werror
 
 all: clean
 	(cd libft/ make re)
-	gcc $(SRC) -o $(NAME) $(LIB) -g
+	gcc $(SRC) -o $(NAME) $(LIB) $(FLAGS) -g
 
 clean:
 	rm -rf $(NAME)
