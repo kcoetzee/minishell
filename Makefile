@@ -8,6 +8,7 @@ LIB = -Llibft -lft
 FLAGS = -Wall -Wextra -Werror
 
 all: clean
+	(cd libft/ make re)
 	gcc $(SRC) -o $(NAME) $(LIB) -g
 
 clean:

@@ -106,7 +106,7 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 }
 int		run_builtin_setenv(t_command *command, char ***envp)
 {
-	char	*result;
+	//char	*result;
 	t_env	*list;
 
 	list = ft_create_env_list(*envp); // freed		

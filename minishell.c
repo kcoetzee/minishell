@@ -219,7 +219,7 @@ void	process_input(char ***envp, char *input)
 }
 
 
-void	input_loop(char **argv, char **envp)
+void	input_loop(char **envp)
 {
 	char	*line;
 	char	*format;
@@ -248,5 +248,6 @@ void	input_loop(char **argv, char **envp)
 
 int		main(int argc, char **argv, char *envp[])
 {
-	input_loop(argv, envp);
+	if (argc && argv)
+	input_loop(envp);
 }

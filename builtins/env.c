@@ -12,7 +12,7 @@
 
 #include "../main.h"
 
-int		run_builtin_env(t_command *command, char **envp)
+int		run_builtin_env(char **envp)
 {
 	debug_print_env(envp);
 	return (1);

@@ -12,7 +12,7 @@
 
 #include "../main.h"
 
-int	run_builtin_echo(t_command *cmd, char **envp)
+int	run_builtin_echo(t_command *cmd)
 {
 	int i;
 	t_command *command;

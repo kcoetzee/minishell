@@ -121,11 +121,11 @@ int	try_launch_builtins(t_command *command, char ***envp)
 {
 	debug("try_launch_builtins");
 	if (ft_strequ(command->file_name, "echo")) 
-		return(run_builtin_echo(command, *envp)); 
+		return(run_builtin_echo(command)); 
 	else if(ft_strequ(command->file_name, "cd"))
 		return (run_builtin_cd(command, envp)); 
 	else if (ft_strequ(command->file_name, "env"))
-		return (run_builtin_env(command, *envp));
+		return (run_builtin_env(*envp));
 	else if (ft_strequ(command->file_name, "exit"))
 			run_builtin_exit();
 	else if (ft_strequ(command->file_name, "setenv")) 

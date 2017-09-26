@@ -69,11 +69,11 @@ void	ft_free_list(t_env *list);
 /*
 ** builtin programs
 */
-int		run_builtin_echo(t_command *command, char **envp);
+int		run_builtin_echo(t_command *command);
 int		run_builtin_cd(t_command *command, char ***envp);
 int		run_builtin_setenv(t_command *command, char ***envp);
 int		run_builtin_unsetenv(t_command *command, char ***envp);
-int		run_builtin_env(t_command *command, char **envp);
+int		run_builtin_env(char **envp);
 void	run_builtin_exit(void);
 char	*ft_strtrim_delim(char const *s, char delim);
 char	*remove_quotes(char *str);
