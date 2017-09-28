@@ -29,7 +29,7 @@ char	**arg_list_to_arr(t_args *list)
 char	*arg_list_to_line(t_args *list)
 {
 	char	*newstr;
-	newstr = (char*)malloc(sizeof(char));
+	newstr = (char*)e_malloc(sizeof(char));
 	
 	while(list->next)
 	{
@@ -61,7 +61,7 @@ void	print_list(t_command *list)
 t_command	*add_terminator(char *terminator, t_command *list)
 {
 	list->terminator = ft_strdup(terminator);
-	list->next = (t_command*)malloc(sizeof(t_command));
+	list->next = (t_command*)e_malloc(sizeof(t_command));
 	list = list->next;
 	return (list);
 }
@@ -85,20 +85,20 @@ t_command	*create_list(char **input)
 	t_command	*lhead;
 
 	i = -1;
-	list = (t_command*)malloc(sizeof(t_command));
+	list = (t_command*)e_malloc(sizeof(t_command));
 	lhead = list;
 	len = ft_arr_len(input);
 	while (++i < len)
 	{
 		list->file_name = ft_strdup(input[i++]);
-		list->args = (t_args*)malloc(sizeof(t_args));
+		list->args = (t_args*)e_malloc(sizeof(t_args));
 		ahead = list->args;
 		if (i <= len)
 		{
 			while(input[i] && check_opp(input[i]) != 1)
 			{
 				list->args->str = ft_strdup(input[i]);
-				list->args->next = (t_args*)malloc(sizeof(t_args));
+				list->args->next = (t_args*)e_malloc(sizeof(t_args));
 				list->args = list->args->next;
 				i++;
 			}

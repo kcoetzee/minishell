@@ -13,13 +13,15 @@
 #ifndef MAIN_H
 # define MAIN_H
 
+
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include "libft/libft.h"
-
+# include <term.h>
+# include <termios.h>
 
 typedef	struct	s_command t_command;
 typedef	struct	s_args t_args;

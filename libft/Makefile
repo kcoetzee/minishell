@@ -22,10 +22,10 @@ OBJ = ft_atoi.o ft_bzero.o ft_free_array.o ft_isalnum.o ft_isalpha.o ft_isascii.
 
 all: $(NAME)
 $(NAME):
-	gcc $(FLAG) $(OPTION) $(SRC)
-	ar rc $(NAME) $(OBJ)
+	@gcc $(FLAG) $(OPTION) $(SRC)
+	@ar rc $(NAME) $(OBJ)
 clean:
-	/bin/rm -f $(OBJ)
+	@/bin/rm -f $(OBJ)
 fclean: clean
-	/bin/rm -f $(NAME) a.out
+	@/bin/rm -f $(NAME) a.out
 re: fclean all

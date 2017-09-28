@@ -12,11 +12,11 @@
 
 #include "libft.h"
 
-void	*ft_memalloc(size_t size)
+void	*ft_mee_malloc(size_t size)
 {
 	unsigned char	*len;
 
-	len = (unsigned char*)malloc(sizeof(char) * size);
+	len = (unsigned char*)e_malloc(sizeof(char) * size);
 	if (len == NULL)
 		return (NULL);
 	return (ft_memset(len, 0, size));

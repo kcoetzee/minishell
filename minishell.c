@@ -12,6 +12,12 @@
 
 #include "main.h"
 
+#ifdef unix
+static char term_buffer[2048];
+#else
+#define term_buffer 0
+#endif
+
 /*
 ** need to take out function but think can include libft.h for
 ** putchar and putstr and should fix
@@ -77,7 +83,7 @@ char	*format_opp(char *line)
 	char	*newstr;	
 
 	i = 0;
-	newstr = ft_strnew(sizeof(char));
+	//newstr = ft_strnew(sizeof(char));
 	while(line[i])
 	{
 		j = i;
@@ -95,16 +101,21 @@ char	*format_opp(char *line)
 		newstr = ft_addchar(newstr, line[i]);
 		i++;
 	}
-	free(line);
+	//e_free(line);
 	return(newstr);
 }
 
 char	*format_input_string(char *line)
 {
+
+	return (line);
 	int		i;
 	int		j;
 	char	*trimmed;
+	char	*temp;
 	char	*newstr;
+
+	fprintf(stderr, "RECIEVED LINE: %s\n", line);
 
 	i = 0;
 	j = 0;
@@ -128,7 +139,7 @@ char	*format_input_string(char *line)
 		}
 	}
 	fprintf(stderr, "FORMATTED STRING: %s\n", newstr);
-	free(trimmed);
+	//e_free(trimmed);
 	return(newstr); 
 }
 
@@ -143,7 +154,6 @@ void	process_input(char ***envp, char *input)
 	int status;
 	t_command *prev;
 
-	
 	args = ft_strsplit(input, ' '); 
 	list = create_command_list(args); 
 	head = list;
@@ -203,9 +213,10 @@ void	process_input(char ***envp, char *input)
 		prev = list;
 		list = list->next;	
 	}
-	close(old_fd[0]);
-	close(old_fd[1]);
 
+	// TAKEN OUT BECUASE VALGRIND BEING A PUSSY
+	//close(old_fd[0]);
+	//close(old_fd[1]);
 	if (pid != 0)
 	{
 		destroy_command_list(head);
@@ -223,6 +234,7 @@ void	input_loop(char **argv, char **envp)
 {
 	char	*line;
 	char	*format;
+	char	*test;
 	int		i;
 
 	i = 0;
@@ -232,18 +244,65 @@ void	input_loop(char **argv, char **envp)
 	{
 		if (line != NULL)
 		{
+			fprintf(stderr, "LINE: %s\n", line);
 			format = format_input_string(line); // busy
 			process_input(&envp, format);
 			ft_putstr("【ツ】>: ");
-			free(line);
-			free(format);
+			////e_free(format);
 		}
+		free_heap();
+		//print_heap();
+		free(line);
+
 	}
+
 }
 
+void	interrogate_terminal(void)
+{
+	//cm_string = tgetstr ("cm", BUFFADDR);
+	//tgoto (cm_string, int hpos, int vpos)
+}
+
+void	init_terminal_data (void)
+{
+  char *termtype = getenv ("TERM");
+  int success;
+
+  if (termtype == 0)
+    fprintf(stderr, "Specify a terminal type with `setenv TERM <yourtype>'.\n");
+
+  success = tgetent (term_buffer, termtype);
+  if (success < 0)
+    fprintf(stderr,"Could not access the termcap data base.\n");
+  if (success == 0)
+    fprintf(stderr,"Terminal type `%s' is not defined.\n", termtype);
+}
+
+
+void	memory_driver(void)
+{
+	fprintf(stderr, "%s\n", "----------------- ALLOCATING MEMORY -----------------");
+	int *d1 = (int*)e_malloc(sizeof(int));	
+	int *d2 = (int*)e_malloc(sizeof(int));
+	int *d3 = (int*)e_malloc(sizeof(int));
+
+	print_heap();
+	fprintf(stderr, "%s\n", "----------------- FREEING MEMORY -----------------");
+	////e_free(d1);
+	////e_free(d2);
+	////e_free(d3);
+	free_heap();
+	//d1 = (int*)e_malloc(sizeof(int));
+	print_heap();
+}
 
 int		main(int argc, char **argv, char *envp[])
 {
 	init_heap();
+	//memory_driver();
+	//init_terminal_data();
+	//interrogate_terminal();
+	//fprintf(stderr, "%d\n", getpid());
 	input_loop(argv, envp);
 }

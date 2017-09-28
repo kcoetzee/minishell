@@ -19,13 +19,13 @@ char	*ft_addchar(char *str, char c)
 	char	*result;
 
 	i = -1;
-	result = (char*)malloc(sizeof(char) * ft_strlen(str) + 2);
+	result = (char*)e_malloc(sizeof(char) * ft_strlen(str) + 2);
 	if (str == NULL)
 		return (NULL);
 	while (str[++i])
 		result[i] = str[i];
 	result[i] = c;
 	result[i + 1] = '\0';
-	free(str);
+	//e_free(str);
 	return (result);
 }

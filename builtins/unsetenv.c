@@ -14,8 +14,8 @@
 
 void		free_env(t_env *env)
 {
-	free(env->str);
-	free(env);
+	//e_free(env->str);
+	//e_free(env);
 }
 
 

@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
 void	ft_memdel(void **ap)
 {
 	if (ap != NULL && *ap != NULL)
 	{
-		free(*ap);
+		//e_free(*ap);
 		*ap = NULL;
 	}
 }

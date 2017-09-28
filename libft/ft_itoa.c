@@ -47,7 +47,7 @@ char					*ft_itoa(int nbr)
 	else
 		sign = 1;
 	len = ft_len(nbr);
-	c = (char *)malloc(sizeof(char) * len + 1);
+	c = (char *)e_malloc(sizeof(char) * len + 1);
 	if (c == NULL)
 		return (NULL);
 	c[len] = '\0';

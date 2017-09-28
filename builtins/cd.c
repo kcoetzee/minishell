@@ -108,7 +108,7 @@ int	try_cd_path(t_command *command, char **envp)
 	i = 0;
 	found = 0;
 	if (path != NULL)
-		free(path);
+		//e_free(path);
 	while (path_list[i] && !found)
 	{
 		path_list[i] = ft_strjoin(path_list[i], "/");
@@ -168,7 +168,7 @@ int	run_builtin_cd(t_command *command, char ***envp)
 			cur_path = ft_strcpy(cur_path, command->args->str);
 			pwd = ft_strjoin(pwd, "/");
 			cur_path = ft_strjoin(pwd, cur_path);
-			free(pwd);
+			//e_free(pwd);
 			debug("Cur path: ");
 			debug(cur_path);
 			if ((ret = chdir(cur_path)))

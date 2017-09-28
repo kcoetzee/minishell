@@ -38,7 +38,7 @@ static char			*get_word(char const *str, char c, int *i)
 	char	*s;
 
 	k = 0;
-	//s = (char *)malloc(sizeof(s) * (ft_strlen((char *)str)));
+	//s = (char *)e_malloc(sizeof(s) * (ft_strlen((char *)str)));
 	s = ft_strnew(ft_strlen(str));
 	if (!s)
 		return (NULL);
@@ -66,7 +66,7 @@ char	**ft_strsplit(char const *s, char c)
 	if (!s)
 		return (NULL);
 	word = count_words(s, c);
-	str = (char **)malloc(sizeof(str) * (word + 2));
+	str = (char **)e_malloc(sizeof(str) * (word + 2));
 	if (!str)
 		return (NULL);
 	while (s[i] == c && s[i])
@@ -87,7 +87,7 @@ void	free_strsplit(char **arr)
 	i = -1;
 	while (arr[++i])
 	{
-		free(arr[i]);
+		//e_free(arr[i]);
 	}
-	free(arr);
+	//e_free(arr);
 }

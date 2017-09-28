@@ -32,13 +32,16 @@ struct	s_heap
 {
 	void	*address;
 	t_heap	*next;
+	short int 	is_exempt;
 } heap;
 
 
 void	init_heap();
 void	*e_malloc(int size);
+void	e_free(void *address);
 void	print_heap();
 void	heap_push(void *address);
+void	exempt_memory(void *address);
 void	free_heap();
 
 void				*ft_memset(void *b, int c, size_t len);
@@ -64,7 +67,7 @@ void				ft_strdel(char **as);
 void				ft_strclr(char *s);
 void				ft_striter(char *s, void (*f)(char *));
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
-void				*ft_memalloc(size_t size);
+void				*ft_mee_malloc(size_t size);
 void				ft_memdel(void **ap);
 char                *ft_addchar(char *str, char c);
 char				*ft_strdup(const char *s1);
@@ -105,5 +108,9 @@ size_t				ft_arraylen(const void *array);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 size_t				ft_strlen(const char *s);
 void                free_strsplit(char **arr);
+char	*e_ft_strjoin(char const *s1, char const *s2);
+char	*e_ft_strnew(size_t size);
+char	*e_ft_strdup(const char *s1);
+char	*e_ft_strsub(char const *s, unsigned int start, size_t len);
 
 #endif

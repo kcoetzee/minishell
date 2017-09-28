@@ -101,19 +101,19 @@ void		destroy_command_list(t_command *list)
 	while (list != NULL)
 	{
 		tmp = list;
-		free(list->file_name);
-		free(list->terminator);
+		//e_free(list->file_name);
+		//e_free(list->terminator);
 		
 		while (list->args != NULL)
 		{
 			temp_arg = list->args;
-			free(list->args->str);
+			//e_free(list->args->str);
 			list->args = list->args->next;
-			free(temp_arg);
+			//e_free(temp_arg);
 		}
 
 		list = list->next;
-		free(tmp);
+		//e_free(tmp);
 	}
 }
 
@@ -133,7 +133,7 @@ static	t_args		*create_arg_list(char **input, t_command *cur_command, int *index
 		return (NULL);
 	}
 	
-	head = (t_args*)malloc(sizeof(t_args));
+	head = (t_args*)e_malloc(sizeof(t_args));
 	head->str = ft_strdup(input[(*index)++]);
 	
 	head->next = NULL;
@@ -141,7 +141,7 @@ static	t_args		*create_arg_list(char **input, t_command *cur_command, int *index
 
 	while (input[*index] && check_opp(input[*index]) != 1)
 	{
-		itt->next = (t_args*)malloc(sizeof(t_args));	
+		itt->next = (t_args*)e_malloc(sizeof(t_args));	
 		itt = itt->next;
 		itt->str = ft_strdup(input[*index]);	
 		itt->next = NULL;
@@ -170,7 +170,7 @@ t_command	*create_command_list(char **input)
 		return (NULL);
 	}
 	
-	head = (t_command*)malloc(sizeof(t_command));		
+	head = (t_command*)e_malloc(sizeof(t_command));		
 	head->file_name = ft_strdup(input[i++]);
 	head->args = create_arg_list(input, head, &i);
 	head->next = NULL;
@@ -178,7 +178,7 @@ t_command	*create_command_list(char **input)
 	itt = head;
 	while (input[i])
 	{
-		itt->next = (t_command*)malloc(sizeof(t_command));
+		itt->next = (t_command*)e_malloc(sizeof(t_command));
 		itt = itt->next;
 		itt->file_name = ft_strdup(input[i++]);
 		itt->args = create_arg_list(input, itt, &i);

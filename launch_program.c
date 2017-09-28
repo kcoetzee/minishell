@@ -69,7 +69,7 @@ int	try_launch_path(t_command *command, char **envp)
 	i = 0;
 	found = 0;
 	if (path != NULL)
-		free(path);
+		//e_free(path);
 	while (path_list[i])
 	{
 		path_list[i] = ft_strjoin(path_list[i], "/");

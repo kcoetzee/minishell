@@ -16,6 +16,16 @@ char	*ft_strdup(const char *s1)
 {
 	char	*dest;
 
+	if ((dest = (char*)e_malloc(sizeof(char) * (ft_strlen(s1) + 1))) == 0)
+		return (NULL);
+	ft_strcpy(dest, s1);
+	return (dest);
+}
+
+char	*e_ft_strdup(const char *s1)
+{
+	char	*dest;
+
 	if ((dest = (char*)malloc(sizeof(char) * (ft_strlen(s1) + 1))) == 0)
 		return (NULL);
 	ft_strcpy(dest, s1);

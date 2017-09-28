@@ -31,7 +31,7 @@ char	*remove_quotes(char *str)
 			size++;
 		i++;
 	}
-	new_str = (char*)malloc(sizeof(char) * (ft_strlen(str) - size));
+	new_str = (char*)e_malloc(sizeof(char) * (ft_strlen(str) - size));
 	i = 0;
 	j = 0;
 	while (str[i])
@@ -43,6 +43,6 @@ char	*remove_quotes(char *str)
 		}
 		i++;
 	}
-	free(str);
+	//e_free(str);
 	return (new_str);
 }

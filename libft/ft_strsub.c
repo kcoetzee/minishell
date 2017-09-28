@@ -31,3 +31,23 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	}
 	return (sub);
 }
+
+char	*e_ft_strsub(char const *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	i;
+
+	if (s == NULL)
+		return (NULL);
+	sub = e_ft_strnew(len);
+	if (sub == NULL)
+		return (NULL);
+	s = s + start;
+	i = 0;
+	while (i < len)
+	{
+		sub[i] = s[i];
+		i++;
+	}
+	return (sub);
+}
