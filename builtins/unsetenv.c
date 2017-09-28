@@ -35,7 +35,7 @@ t_env		*ft_unset_env(char *key, t_env *list)
 		{
 			temp = list->next;
 			list->next = list->next->next;
-			free_env(temp);
+			//free_env(temp);
 			return (head);
 		}
 		list = list->next;
@@ -48,9 +48,10 @@ int	run_builtin_unsetenv(t_command *command, char ***envp)
 	t_env *list;
 	list = ft_create_env_list(*envp);
 	list = ft_unset_env(command->args->str, list);
-	debug_print_env_list(list);	
-	*envp = env_list_to_arr(list);	
-	
-	ft_free_list(list);	
+	//debug_print_env_list(list);
+	*envp = env_list_to_arr(list);
+
+	//ft_free_list(list);
+
 	return (1);
 }

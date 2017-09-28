@@ -80,7 +80,7 @@ char	*format_opp(char *line)
 {
 	int		i;
 	int		j;
-	char	*newstr;	
+	char	*newstr;
 
 	i = 0;
 	//newstr = ft_strnew(sizeof(char));
@@ -140,22 +140,22 @@ char	*format_input_string(char *line)
 	}
 	fprintf(stderr, "FORMATTED STRING: %s\n", newstr);
 	//e_free(trimmed);
-	return(newstr); 
+	return(newstr);
 }
 
 void	process_input(char ***envp, char *input)
 {
 	char **args;
 	t_command *head;
-	t_command *list;	
+	t_command *list;
 	int	new_fd[2];
 	int old_fd[2];
 	int pid;
 	int status;
 	t_command *prev;
 
-	args = ft_strsplit(input, ' '); 
-	list = create_command_list(args); 
+	args = ft_strsplit(input, ' ');
+	list = create_command_list(args);
 	head = list;
 	free_strsplit(args);
 	prev = NULL;
@@ -194,11 +194,11 @@ void	process_input(char ***envp, char *input)
 				close(new_fd[0]);
 				dup2(new_fd[1], 1);
 				close(new_fd[1]);
-			}	
+			}
 			launch_program(list, envp);
 		}
 		else // if parent
-		{	
+		{
 			if (prev != NULL)
 			{
 				close(old_fd[0]);
@@ -211,7 +211,7 @@ void	process_input(char ***envp, char *input)
 			}
 		}
 		prev = list;
-		list = list->next;	
+		list = list->next;
 	}
 
 	// TAKEN OUT BECUASE VALGRIND BEING A PUSSY
@@ -219,8 +219,8 @@ void	process_input(char ***envp, char *input)
 	//close(old_fd[1]);
 	if (pid != 0)
 	{
-		destroy_command_list(head);
-	}	
+		//destroy_command_list(head);
+	}
 
 	while ((pid = wait(&status)) != -1)
 	{
@@ -283,7 +283,7 @@ void	init_terminal_data (void)
 void	memory_driver(void)
 {
 	fprintf(stderr, "%s\n", "----------------- ALLOCATING MEMORY -----------------");
-	int *d1 = (int*)e_malloc(sizeof(int));	
+	int *d1 = (int*)e_malloc(sizeof(int));
 	int *d2 = (int*)e_malloc(sizeof(int));
 	int *d3 = (int*)e_malloc(sizeof(int));
 

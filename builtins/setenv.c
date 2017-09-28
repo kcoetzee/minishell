@@ -35,16 +35,17 @@ char	**env_list_to_arr(t_env *list)
 	int i;
 	int len;
 	char **result;
-	
+
 	i = 0;
 	itt = list;
 	len = list_len(itt);
-	result = (char**)e_malloc(sizeof(char*) * len);
+	result = (char**)malloc(sizeof(char*) * len);
 	while (itt)
 	{
-		result[i++] = ft_strdup(itt->str);
+		result[i++] = e_ft_strdup(itt->str);
 		itt = itt->next;
 	}
+	result[i] = 0;
 	return (result);
 }
 
@@ -75,10 +76,10 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 	{
 		if (ft_strncmp(itt->next->str, str, pos_equal(itt->next->str)) == 0)
 		{
-			join = ft_strjoin(str, value); 
+			join = ft_strjoin(str, value);
 			itt->next->str = ft_strdup(join);
 
-			//e_free(join);	
+			//e_free(join);
 			//e_free(str);
 			//e_free(value);
 			return (list);
@@ -92,7 +93,7 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 	itt->next->next = NULL;
 	//fprintf(stderr, "ft_set_env: %s\n", itt->str);
 	//list->next = (t_env*)e_malloc(sizeof(t_env));
-	
+
 	//list->next = (t_env*)e_malloc(sizeof(t_env));
 	//list->str = ft_strdup(join);
 	//list->next->next = NULL;
@@ -109,9 +110,9 @@ int		run_builtin_setenv(t_command *command, char ***envp)
 	char	*result;
 	t_env	*list;
 
-	list = ft_create_env_list(*envp); // freed		
+	list = ft_create_env_list(*envp); // freed
 	list = ft_set_env(command->args->str, command->args->next->str, list); // freed
-	*envp = env_list_to_arr(list); 
-	//ft_free_list(list);	
+	*envp = env_list_to_arr(list);
+	//ft_free_list(list);
 	return (1);
 }
