@@ -6,25 +6,11 @@
 /*   By: vlangman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/13 12:33:32 by vlangman          #+#    #+#             */
-/*   Updated: 2017/09/25 14:55:01 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/28 10:49:17 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-#include "main.h"
-
-void	ft_free_list(t_env *list)
-{
-	t_env	*tempc;
-	while(list)
-	{
-		//e_free(list->str);
-		tempc = list->next;
-		//e_free(list);
-		list = tempc;
-	}
-	////e_free(tempc);
-}
 
 void	debug_print_env_list(t_env *list)
 {
@@ -43,44 +29,22 @@ void	debug_print_env_list(t_env *list)
 
 t_env	*ft_create_env_list(char **env)
 {
-	t_env *head;
-	t_env *itt;
-	int i;
-	
+	t_env	*head;
+	t_env	*itt;
+	int		i;
+
 	i = 1;
 	head = (t_env*)e_malloc(sizeof(t_env));
 	head->str = ft_strdup(env[0]);
 	head->next = NULL;
 	itt = head;
-
 	while (env[i])
 	{
 		itt->next = (t_env*)e_malloc(sizeof(t_env));
 		itt = itt->next;
 		itt->str = ft_strdup(env[i]);
 		itt->next = NULL;
-		i++;	
+		i++;
 	}
 	return (head);
 }
-
-/*
-t_env	*ft_load_list(char **env)
-{
-		int		i;
-		t_env	*list;
-		t_env	*begin;
-		
-		i = 0;
-		list = (t_env*)e_malloc(sizeof(t_env));
-		begin = list;
-		while (env[i])
-		{
-			list->next = (t_env*)e_malloc(sizeof(t_env));
-			list->str = ft_strdup(env[i]);
-			list = list->next;
-			i++;
-		}
-		list = NULL;
-		return (begin);
-}*/

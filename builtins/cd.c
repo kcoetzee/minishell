@@ -6,19 +6,11 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 10:31:44 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/25 14:30:40 by kcoetzee         ###   ########.fr       */
+/*   Updated: 2017/09/28 11:11:27 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
-
-/*
-** copy_env needs 8 lines short and i have commented the other functions
-** that were commented still need??
-** after j = 0 line 29 ft_putchar(i + '0');
-** ft_putstr(") ");
-** after ft_putchar line 33 printf("%c", envp[i][j]);
-*/
 
 void	debug_print_env(char **envp)
 {
@@ -49,6 +41,8 @@ int		get_num_args(char **argv)
 		i++;
 	return (i);
 }
+
+
 
 void	change_dir_absolute(char **argv, char **envp)
 {
@@ -107,14 +101,13 @@ int	try_cd_path(t_command *command, char **envp)
 	path_list = ft_strsplit(path, ':');
 	i = 0;
 	found = 0;
-	if (path != NULL)
-		//e_free(path);
 	while (path_list[i] && !found)
 	{
 		path_list[i] = ft_strjoin(path_list[i], "/");
 		path_list[i] = ft_strjoin(path_list[i], command->args->str);
 		if ((ret = chdir(path_list[i])))
 		{
+
 		}
 		else
 		{
@@ -133,50 +126,31 @@ int	run_builtin_cd(t_command *command, char ***envp)
 	t_env *list;
 	int		ret;
 
-	list = ft_create_env_list(*envp); // busy
+	list = ft_create_env_list(*envp);
 	home_path = ft_get_env("HOME", list);
-	fflush(stdout);
 	if (command->args == NULL)
 	{
 		if (home_path == NULL)
-			fprintf(stderr, "HOME directory not set and no directory operatives\n");
-		else
-		{
-			printf("Home path: %s\n", home_path);
-			if ((ret = chdir(home_path)))
-				fprintf(stderr, "HOME directory not valid.");
-			else
-			{
-				//list = ft_set_env("PWD", home_path, list);
-				//*envp = list_to_arr(list);
-			}
-		}
+			ft_putstr("HOME directory not set and no directory operatives\n");
+		else if ((ret = chdir(home_path)))
+			ft_putstr("HOME directory not valid.");
 	}
 	else if (command->args->str[0] == '/' || command->args->str[0] == '.')
 	{
-		//printf("Attempting path: %s\n", command->args->str);
 		if ((ret = chdir(command->args->str)))
 			ft_putstr("Invalid directory.\n");
 	}
-	else
+	else if (try_cd_path(command, *envp) == 0)
 	{
-		if (try_cd_path(command, *envp) == 0)
-		{
 			cur_path = ft_strnew(ft_strlen(command->args->str));
 			pwd = ft_strnew(255);
 			pwd = getcwd(pwd, 255);
 			cur_path = ft_strcpy(cur_path, command->args->str);
 			pwd = ft_strjoin(pwd, "/");
 			cur_path = ft_strjoin(pwd, cur_path);
-			//e_free(pwd);
-			//debug("Cur path: ");
 			debug(cur_path);
 			if ((ret = chdir(cur_path)))
-				fprintf(stderr, "Invalid directory\n");
-
-		}
+				ft_putstr("Invalid directory\n");
 	}
-
-
 	return (1);
 }

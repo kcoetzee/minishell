@@ -35,22 +35,21 @@ set_input_mode (void)
   tcsetattr (STDIN_FILENO, TCSAFLUSH, &tattr);
 }
 
-int
-main (void)
+void	interrogate_terminal(void)
 {
-  char c;
+}
 
-  set_input_mode ();
+void	init_terminal_data (void)
+{
+  char *termtype = getenv ("TERM");
+  int success;
 
-  while (1)
-    {
-      read (STDIN_FILENO, &c, 1);
-      fprintf(stderr, "Key: %d\n",c);
-      if (c == '\004')          /* C-d */
-        break;
-      else
-        putchar (c);
-    }
+  if (termtype == 0)
+    fprintf(stderr, "Specify a terminal type with `setenv TERM <yourtype>'.\n");
 
-  return EXIT_SUCCESS;
+  success = tgetent (term_buffer, termtype);
+  if (success < 0)
+    fprintf(stderr,"Could not access the termcap data base.\n");
+  if (success == 0)
+    fprintf(stderr,"Terminal type `%s' is not defined.\n", termtype);
 }

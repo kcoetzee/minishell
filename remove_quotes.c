@@ -6,7 +6,7 @@
 /*   By: lchant <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:56:27 by lchant            #+#    #+#             */
-/*   Updated: 2017/09/18 11:56:28 by lchant           ###   ########.fr       */
+/*   Updated: 2017/09/28 10:49:13 by kcoetzee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ char	*remove_quotes(char *str)
 	size = 0;
 	while (str[i])
 	{
-		if (str[i] == '"')
+		if (str[i++] == '"')
 			size++;
-		i++;
 	}
 	new_str = (char*)e_malloc(sizeof(char) * (ft_strlen(str) - size));
 	i = 0;
@@ -43,6 +42,5 @@ char	*remove_quotes(char *str)
 		}
 		i++;
 	}
-	//e_free(str);
 	return (new_str);
 }
