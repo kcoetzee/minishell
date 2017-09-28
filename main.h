@@ -23,9 +23,16 @@
 # include <termios.h>
 
 typedef	struct s_command	t_command;
+typedef struct s_opps		t_opps;
 typedef	struct s_args		t_args;
 typedef struct s_heap		t_heap;
 typedef	struct s_env		t_env;
+
+struct 		s_opps
+{
+	t_command	*cmd;
+	t_opps		*next;
+};
 
 struct		s_args
 {
@@ -97,6 +104,8 @@ void		destroy_command_list(t_command *list);
 t_command	*create_command_list(char **input);
 t_args		*create_arg_list(char **input, t_command *cur_command, int *index);
 char		**command_to_array(t_command *cmd);
+void		handle_and_or(char ***envp, char *format);
+int			and_or_check(char *str);
 /*
 **	NORMAL FUKIN UNITLS
 */

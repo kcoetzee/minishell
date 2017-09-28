@@ -27,7 +27,10 @@ void	input_loop(char **argv, char **envp)
 		if (line != NULL)
 		{
 			format = format_input_string(line);
-			process_input(&envp, format);
+			if (and_or_check(format) == 1)
+				handle_and_or(&envp, format);
+			else
+				process_input(&envp, format);
 			ft_putstr("【ツ】>: ");
 		}
 		free_heap();

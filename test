@@ -1,19 +1,2 @@
-\
-€
-a.out
-builtins
-command_list.c
-ft_load_list.c
-get_env.c
-launch_program.c
-libft
-main.h
-Makefile
-memory_check.c
-minishell
-minishell.c
-minishell.dSYM
-minishell.zip
-remove_quotes.c
-termcaps.c
-test
+      21      21     240
+      21      21     240
