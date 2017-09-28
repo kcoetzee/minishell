@@ -107,7 +107,6 @@ char	*format_opp(char *line)
 
 char	*format_input_string(char *line)
 {
-
 	return (line);
 	int		i;
 	int		j;
@@ -242,14 +241,14 @@ void	input_loop(char **argv, char **envp)
 	ft_putstr("【ツ】>: ");
 	while (get_next_line(0, &line) == 1)
 	{
-		if (line != NULL)
-		{
+		//if (line != NULL)
+		//{
 			fprintf(stderr, "LINE: %s\n", line);
 			format = format_input_string(line); // busy
 			process_input(&envp, format);
 			ft_putstr("【ツ】>: ");
 			////e_free(format);
-		}
+		//}
 		free_heap();
 		//print_heap();
 		free(line);

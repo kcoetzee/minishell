@@ -25,6 +25,7 @@ static int		gnl_check_stock(char **stock, char **line)
 		tmp = NULL;
 		return (1);
 	}
+
 	return (0);
 }
 
@@ -35,7 +36,10 @@ static int		gnl_check_read(char *buffer, char **stock, char **line)
 	if ((tmp = ft_strchr(buffer, '\n')))
 	{
 		*tmp = '\0';
-		*line = e_ft_strjoin(*stock, buffer);
+
+		//*line = e_ft_strjoin(*stock, buffer);
+		*line = e_ft_strdup(buffer);
+
 		free(*stock);
 		*stock = e_ft_strdup(tmp + 1);
 		tmp = NULL;
@@ -61,7 +65,8 @@ int				get_next_line(int const fd, char **line)
 	{
 		buffer[ret] = '\0';
 		if (gnl_check_read(buffer, &stock, line))
-		{			
+		{
+			fprintf(stderr, "%s\n", "-------------NORMAL EXIT");
 			return (1);
 		}
 		stock = e_ft_strjoin(stock, buffer);
@@ -72,8 +77,6 @@ int				get_next_line(int const fd, char **line)
 		return (-1);
 	if (stock == NULL)
 		return (0);
-
-
 
 	*line = ft_strdup(stock);
 	free(stock);
