@@ -134,13 +134,13 @@ int	run_builtin_cd(t_command *command, char ***envp)
 	int		ret;
 
 	list = ft_create_env_list(*envp); // busy
-	home_path = ft_get_env("HOME", list);	
+	home_path = ft_get_env("HOME", list);
 	fflush(stdout);
 	if (command->args == NULL)
 	{
 		if (home_path == NULL)
 			fprintf(stderr, "HOME directory not set and no directory operatives\n");
-		else 
+		else
 		{
 			printf("Home path: %s\n", home_path);
 			if ((ret = chdir(home_path)))
@@ -154,7 +154,7 @@ int	run_builtin_cd(t_command *command, char ***envp)
 	}
 	else if (command->args->str[0] == '/' || command->args->str[0] == '.')
 	{
-		printf("Attempting path: %s\n", command->args->str);
+		//printf("Attempting path: %s\n", command->args->str);
 		if ((ret = chdir(command->args->str)))
 			ft_putstr("Invalid directory.\n");
 	}
@@ -169,7 +169,7 @@ int	run_builtin_cd(t_command *command, char ***envp)
 			pwd = ft_strjoin(pwd, "/");
 			cur_path = ft_strjoin(pwd, cur_path);
 			//e_free(pwd);
-			debug("Cur path: ");
+			//debug("Cur path: ");
 			debug(cur_path);
 			if ((ret = chdir(cur_path)))
 				fprintf(stderr, "Invalid directory\n");

@@ -23,11 +23,6 @@ static char term_buffer[2048];
 ** putchar and putstr and should fix
 */
 
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
 void	debug(char *str)
 {
 	ft_putstr("--- ");
@@ -171,7 +166,7 @@ void	process_input(char ***envp, char *input)
 		// Piping
 		if (list->terminator[0] == '|')
 		{
-			debug("PIPING");
+			//debug("PIPING");
 			pipe(new_fd);
 		}
 		pid = fork();
@@ -181,7 +176,7 @@ void	process_input(char ***envp, char *input)
 			// If there is a previous cmd
 			if (prev != NULL)
 			{
-				debug("prev != NULL");
+				//debug("prev != NULL");
 				dup2(old_fd[0], 0);
 				close(old_fd[0]);
 				close(old_fd[1]);
@@ -189,7 +184,7 @@ void	process_input(char ***envp, char *input)
 			// If there is a next command
 			if (list->next != NULL)
 			{
-				debug("list->next != NULL");
+				//debug("list->next != NULL");
 				close(new_fd[0]);
 				dup2(new_fd[1], 1);
 				close(new_fd[1]);
@@ -223,7 +218,7 @@ void	process_input(char ***envp, char *input)
 
 	while ((pid = wait(&status)) != -1)
 	{
-		fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
+		//fprintf(stderr, "process %d exit with %d\n", pid, WEXITSTATUS(status));
 	}
 
 }
@@ -241,14 +236,14 @@ void	input_loop(char **argv, char **envp)
 	ft_putstr("【ツ】>: ");
 	while (get_next_line(0, &line) == 1)
 	{
-		//if (line != NULL)
-		//{
-			fprintf(stderr, "LINE: %s\n", line);
+		if (line != NULL)
+		{
+			//fprintf(stderr, "LINE: %s\n", line);
 			format = format_input_string(line); // busy
 			process_input(&envp, format);
 			ft_putstr("【ツ】>: ");
 			////e_free(format);
-		//}
+		}
 		free_heap();
 		//print_heap();
 		free(line);

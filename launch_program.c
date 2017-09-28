@@ -73,9 +73,9 @@ int	try_launch_path(t_command *command, char **envp)
 	while (path_list[i])
 	{
 		path_list[i] = ft_strjoin(path_list[i], "/");
-		path_list[i] = ft_strjoin(path_list[i], command->file_name);	
+		path_list[i] = ft_strjoin(path_list[i], command->file_name);
 		path_list[i] = remove_quotes(path_list[i]);
-		if ((execve(path_list[i], command_to_array(command), envp) != -1))	
+		if ((execve(path_list[i], command_to_array(command), envp) != -1))
 		{
 			found = 1;
 		}
@@ -119,16 +119,16 @@ int		execute_builtin(t_command *command, int fd[])
 
 int	try_launch_builtins(t_command *command, char ***envp)
 {
-	debug("try_launch_builtins");
-	if (ft_strequ(command->file_name, "echo")) 
-		return(run_builtin_echo(command, *envp)); 
+	//debug("try_launch_builtins");
+	if (ft_strequ(command->file_name, "echo"))
+		return(run_builtin_echo(command, *envp));
 	else if(ft_strequ(command->file_name, "cd"))
-		return (run_builtin_cd(command, envp)); 
+		return (run_builtin_cd(command, envp));
 	else if (ft_strequ(command->file_name, "env"))
 		return (run_builtin_env(command, *envp));
 	else if (ft_strequ(command->file_name, "exit"))
 			run_builtin_exit();
-	else if (ft_strequ(command->file_name, "setenv")) 
+	else if (ft_strequ(command->file_name, "setenv"))
 		return(run_builtin_setenv(command, envp));
 	else if (ft_strequ(command->file_name, "unsetenv")) // busy
 		return (run_builtin_unsetenv(command, envp));
@@ -142,16 +142,14 @@ void	launch_program(t_command *command, char ***envp)
 	{
 		//	-- launch_absolute_path
 		execve(command->file_name, command_to_array(command), *envp);
-		printf("Invalid path or filename. \n");
+		ft_putstr("Invalid path or filename. \n");
 		exit(0);
 	}
 	//	else try launch_path_var
 	else if (try_launch_path(command, *envp) == 0)
-	{	
+	{
 		execve(command->file_name, command_to_array(command), *envp);
-		printf("Invalid path or filename. \n");
+		ft_putstr("Invalid path or filename. \n");
 		exit(0);
 	}
 }
-
-

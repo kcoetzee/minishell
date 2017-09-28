@@ -66,7 +66,6 @@ int				get_next_line(int const fd, char **line)
 		buffer[ret] = '\0';
 		if (gnl_check_read(buffer, &stock, line))
 		{
-			fprintf(stderr, "%s\n", "-------------NORMAL EXIT");
 			return (1);
 		}
 		stock = e_ft_strjoin(stock, buffer);
