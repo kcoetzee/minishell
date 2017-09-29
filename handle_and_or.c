@@ -11,16 +11,29 @@
 /* ************************************************************************** */
 #include "main.h"
 
-char	**ft_split_opps(char *args)
+int get_arg_len(const char *args)
+{
+	int i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	return (i);
+}
+
+char	**ft_split_opps(char const *args)
 {
 	int 	i;
 	int 	j;
 	char	**ret;
+	int 	len;
 
 	i = 0;
 	j = 0;
-	ret = (char**)malloc(sizeof(char*));
-	ret[j] = (char*)malloc(sizeof(char));
+	len = get_arg_len(args);
+	fprintf(stderr, "LEN: %d\n", len);
+	ret = (char**)e_malloc(sizeof(char*) * (len + 1));
+	ret[j] = ft_strnew(1);
 	while(args[i])
 	{
 		if (args[i] == '"')
@@ -39,49 +52,24 @@ char	**ft_split_opps(char *args)
 			ret[j] = ft_strjoin(ret[j], "||");
 			i += 2;
 			j++;
-			ret[j] = (char*)malloc(sizeof(char));
+			ret[j] = ft_strnew(1);
 		}
 		else if (args[i] == '&' && args[i + 1] && args[i + 1] == '&')//found and outside quotes
 		{
 			ret[j] = ft_strjoin(ret[j], "&&");
 			i += 2;
 			j++;
-			ret[j] = (char*)malloc(sizeof(char));
+			ret[j] = ft_strnew(1);
 		}
 		ret[j] = ft_addchar(ret[j], args[i]);
 		i++;
 	}
 	j++;
-	ret[j] = NULL;
+	ret[j] = 0;
 	return(ret);
 }
 
-t_opps	*create_opps_list(char *args)
-{
-	int 	i;
-	t_opps	*list;
-	t_opps	*head;
-	char	**cmd_arr;
-	char	**temp;
-
-	i = 0;
-	cmd_arr = ft_split_opps(args);
-	debug("SPLIT INTO CMD_ARR");
-	list = (t_opps*)malloc(sizeof(t_opps));
-	head = list;
-	while(cmd_arr[i])
-	{
-		fprintf(stderr, "SENDING COMMAND INTO LIST GENORATOR [%s]\n", cmd_arr[i]);
-		temp = ft_strsplit(cmd_arr[i], ' ');
-		list->cmd = create_command_list(temp);
-		list->next = (t_opps*)malloc(sizeof(t_opps));
-		i++;
-	}
-	list->next = NULL;
-	return (head);
-}
-
-int		and_or_check(char *str)
+int		and_or_check(const char *str)
 {
 	int		i;
 
@@ -114,31 +102,63 @@ int		and_or_check(char *str)
 	return (0);
 }
 
-void		and_or_loop(char ***envp, t_command *list, t_command *prev)
+void		run_opps_loop(char ***envp, char **cmds)
 {
+	int			i;
+	int			pid;
+	int 		status;
+	t_command	*list;
+	t_command	*prev;
 
+	i = 0;
+	prev = NULL;
+	while(cmds[i])
+	{
+		status = 0;
+		list = create_command_list(ft_strsplit(cmds[i], ' '));
+		process_input_loop(envp, list, prev, &status);
+		if (ft_strcmp(list->terminator, "||") == 0)
+		{
+			fprintf(stderr, "EXIT STATUS FROM COMMAND = %d\n", status);
+			if (status == 0);
+			{
+				if (cmds[i + 1])
+					i++;
+				else
+					break ;
+			}
+		}
+		else
+		{
+			if (status > 0)
+			{
+				if (cmds[i + 1])
+					i++;
+				else
+					break ;
+			}
+		}
+		i++;
+	}	
 }
 
-void		handle_and_or(char ***envp, char *format)
+void		handle_and_or(char ***envp, const char *format)
 {
-	char		**args;
+	int 		i;
+	char		**cmds;
 	t_command	*cmd;
 	t_command	*prev;
-	t_opps		*list;
-	
 
 	prev = NULL;
-	fprintf(stderr, "ENTER HANDLE OPPS\n");
-	list = create_opps_list(format); //split args by || and && into an array then use array to assign list with sub cmd lists of type t_command
-	while(list)
+	i = 0;
+	cmds = (char**)e_malloc(sizeof(char*));
+	debug("SPLITTING || AND && INTO ARRAY");
+	cmds = ft_split_opps(format);
+	while(cmds[i])
 	{
-		fprintf(stderr, "ONE OF THE COMMAND LISTS\n");
-		while(list->cmd)
-		{
-			fprintf(stderr, "COMMAND: [%s]\n", list->cmd->file_name);
-			list->cmd = list->cmd->next;
-		}
-		list = list->next;
+		fprintf(stderr, "ARRAY AT POS [%d] = %s\n", i, cmds[i]);
+		i++;
 	}
-	//and_or_loop(envp, list, prev);
+	debug("RUNNING OPPS_LOOP");
+	run_opps_loop(envp, cmds);
 }

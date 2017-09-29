@@ -1,4 +1,3 @@
-     26      27     295
 a.out
 arg_list.c
 builtins
@@ -7,7 +6,6 @@ dat
 debug.c
 formatting.c
 ft_load_list.c
-ft_split_semi.c
 get_env.c
 handle_and_or.c
 handle_opps.c

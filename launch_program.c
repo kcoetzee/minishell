@@ -83,18 +83,19 @@ int		try_launch_builtins(t_command *command, char ***envp)
 	return (0);
 }
 
-void	launch_program(t_command *command, char ***envp)
+int		launch_program(t_command *command, char ***envp)
 {
 	if (command->file_name[0] == '/')
 	{
 		execve(command->file_name, command_to_array(command), *envp);
 		ft_putstr("Invalid path or filename. \n");
-		exit(0);
+		exit(-1);
 	}
 	else if (try_launch_path(command, *envp) == 0)
 	{
 		execve(command->file_name, command_to_array(command), *envp);
 		ft_putstr("Invalid path or filename. \n");
-		exit(0);
+		exit(-1);
 	}
+	return(0);
 }

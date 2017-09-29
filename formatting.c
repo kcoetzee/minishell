@@ -12,6 +12,29 @@
 
 #include "main.h"
 
+int 	is_opp_str(char *str)
+{
+	int	i;
+	char	*opps;
+	char	**arr;
+
+	i = 0;
+	if (str == NULL)
+		return(-1);
+	opps = ";,>,>>,<";
+	arr = ft_strsplit(opps, ',');
+	while (arr[i] && ft_strcmp(arr[i], str) != 0)
+		i++;
+	if (arr[i] && ft_strcmp(arr[i], str) == 0)
+	{
+		debug("FOUND OPP");
+		free_strsplit(arr);
+		return(i);
+	}
+	free_strsplit(arr);
+	return(-1);
+}
+
 int		is_opp(char c)
 {
 	int		i;

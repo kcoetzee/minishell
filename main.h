@@ -21,18 +21,13 @@
 # include "libft/libft.h"
 # include <term.h>
 # include <termios.h>
+# include <fcntl.h>
 
 typedef	struct s_command	t_command;
 typedef struct s_opps		t_opps;
 typedef	struct s_args		t_args;
 typedef struct s_heap		t_heap;
 typedef	struct s_env		t_env;
-
-struct 		s_opps
-{
-	t_command	*cmd;
-	t_opps		*next;
-};
 
 struct		s_args
 {
@@ -61,7 +56,7 @@ t_env		*ft_unset_env(char *key, t_env *list);
 t_env		*ft_load_list(char **env);
 t_env		*ft_set_env(char *key, char *value, t_env *list);
 int			get_next_line(const int fd, char **line);
-void		launch_program(t_command *command, char ***envp);
+int 		launch_program(t_command *command, char ***envp);
 char		*ft_addchar(char *str, char c);
 char		**list_to_arr(t_env *list);
 char		*ft_get_env(char *key, t_env *list);
@@ -104,12 +99,18 @@ void		destroy_command_list(t_command *list);
 t_command	*create_command_list(char **input);
 t_args		*create_arg_list(char **input, t_command *cur_command, int *index);
 char		**command_to_array(t_command *cmd);
-void		handle_and_or(char ***envp, char *format);
-int			and_or_check(char *str);
+void		handle_and_or(char ***envp, const char *format);
+int			and_or_check(const char *str);
+int 		is_opp_str(char *str);
+void		process_input_loop(char ***envp, t_command *list, t_command *prev, int *status);
+char		**ft_split_semi(const char *line);
+int 		check_semicolon(const char *line);
 /*
 **	NORMAL FUKIN UNITLS
 */
 
 void		add_to_stack(void *memory);
 void		free_strsplit(char **arr);
+t_command	*handle_opps(t_command *list, char ***envp, int *old_fd);
+
 #endif

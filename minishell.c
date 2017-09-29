@@ -14,27 +14,34 @@
 
 void	input_loop(char **argv, char **envp)
 {
+	int		i;
 	char	*line;
 	char	*format;
-	char	*test;
-	int		i;
+	char	**cmd_arr;
 
-	i = 0;
 	line = NULL;
-	ft_putstr("【ツ】>: ");
+	ft_putstr(" WHY U NO SEGFAULT! (ノಠ益ಠ)ノ: ");
 	while (get_next_line(0, &line) == 1)
 	{
 		if (line != NULL)
 		{
-			format = format_input_string(line);
-			if (and_or_check(format) == 1)
-				handle_and_or(&envp, format);
+			format = format_input_string(line); // busy
+			if (check_semicolon(format) > 0) //checking for a valid semicolon in the string;
+			{
+				i = -1;
+				cmd_arr = ft_split_semi(format);
+				while (cmd_arr[++i])
+					process_input(&envp, cmd_arr[i]);
+				free_strsplit(cmd_arr);
+				ft_putstr(" ALL HAIL THE ONE TRUE DEV (ノಠ益ಠ)ノ: ");
+			}
 			else
+			{
 				process_input(&envp, format);
-			ft_putstr("【ツ】>: ");
+				ft_putstr(" WHY U NO SEGFAULT ??? (ノಠ益ಠ)ノ: ");
+			}
 		}
 		free_heap();
-		free(line);
 	}
 }
 

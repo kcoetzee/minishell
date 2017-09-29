@@ -46,14 +46,17 @@ void	process_input_parent(t_command *prev, int *old_fd,
 	}
 }
 
-void	process_input_loop(char ***envp, t_command *list, t_command *prev)
+void	process_input_loop(char ***envp, t_command *list, t_command *prev, int *ret_status)
 {
-	int			pid;
+	int			pid1;
 	int			new_fd[2];
 	int			old_fd[2];
+	int 		status;
 
 	while (list)
 	{
+		if (is_opp_str(list->terminator) > 0)			//found operator that isnt a pipe FOUND
+			list = handle_opps(list, envp, old_fd);
 		if (try_launch_builtins(list, envp))
 		{
 			list = list->next;
@@ -61,9 +64,11 @@ void	process_input_loop(char ***envp, t_command *list, t_command *prev)
 		}
 		if (list->terminator[0] == '|')
 			pipe(new_fd);
-		pid = fork();
-		if (pid == 0)
+		pid1 = fork();
+		if (pid1 == 0)
 		{
+			debug("RUNNING COMMAND");
+			debug(list->file_name);
 			process_input_child(prev, old_fd, new_fd, list);
 			launch_program(list, envp);
 		}
@@ -72,6 +77,12 @@ void	process_input_loop(char ***envp, t_command *list, t_command *prev)
 		prev = list;
 		list = list->next;
 	}
+	while (pid1 = wait(&status) != -1)
+	{
+		fprintf(stderr, "STATUS OF EXIT [%d]\n", status);
+		*ret_status = status;
+		;
+	}
 }
 
 void	process_input(char ***envp, char *input)
@@ -79,13 +90,15 @@ void	process_input(char ***envp, char *input)
 	char		**args;
 	t_command	*list;
 	t_command	*prev;
-	int			pid;
-	int			status;
+	int 		status;
 
 	prev = NULL;
-	args = ft_strsplit(input, ' ');
-	list = create_command_list(args);
-	process_input_loop(envp, list, prev);
-	while ((pid = wait(&status)) != -1)
-		;
+	if (and_or_check(input) == 1)
+		handle_and_or(envp, input);
+	else
+	{
+		args = ft_strsplit(input, ' ');
+		list = create_command_list(args);
+		process_input_loop(envp, list, prev, &status);
+	}
 }
