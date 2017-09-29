@@ -12,7 +12,6 @@
 
 #include "../main.h"
 
-
 t_env		*ft_unset_env(char *key, t_env *list)
 {
 	int		len;
@@ -38,10 +37,8 @@ t_env		*ft_unset_env(char *key, t_env *list)
 	return (head);
 }
 
-int	run_builtin_unsetenv(t_command *command)
+int			run_builtin_unsetenv(t_command *command)
 {
-	t_env *list;
 	g_shell.env_list = ft_unset_env(command->args->str, g_shell.env_list);
-
 	return (1);
 }

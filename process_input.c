@@ -83,7 +83,7 @@ void	process_input_loop(t_command *list, t_command *prev, int *ret_status)
 		prev = list;
 		list = list->next;
 	}
-	while (pid1 = wait(&status) != -1)
+	while ((pid1 = wait(&status)) != -1)
 	{
 		fprintf(stderr, "STATUS OF EXIT [%d]\n", status);
 		//*ret_status = status;

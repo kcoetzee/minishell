@@ -72,6 +72,9 @@ void		debug_print_env_list(t_env *env);
 char		**env_list_to_arr(t_env *list);
 void		ft_free_list(t_env *list);
 void		init_shell(char **envp);
+int			args_check(t_command *command);
+int			check_path(t_command *command);
+int			try_cd_path(t_command *command);
 
 /*
 ** builtin programs

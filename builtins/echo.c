@@ -14,9 +14,9 @@
 
 int	run_builtin_echo(t_command *cmd)
 {
-	int i;
-	t_command *command;
-	
+	int			i;
+	t_command	*command;
+
 	command = cmd;
 	i = 0;
 	while (command->args != NULL)
@@ -27,5 +27,4 @@ int	run_builtin_echo(t_command *cmd)
 	}
 	ft_putchar('\n');
 	return (1);
-	//ft_putchar('\n');
 }

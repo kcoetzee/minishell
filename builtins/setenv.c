@@ -28,13 +28,12 @@ int		list_len(t_env *list)
 	return (i);
 }
 
-
 char	**env_list_to_arr(t_env *list)
 {
-	t_env *itt;
-	int i;
-	int len;
-	char **result;
+	t_env	*itt;
+	int		i;
+	int		len;
+	char	**result;
 
 	i = 0;
 	itt = list;
@@ -65,13 +64,11 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 	int		len;
 	char	*join;
 	char	*str;
-	t_env	*head;
 	t_env	*itt;
 
 	itt = list;
 	str = ft_addchar(key, '=');
 	len = ft_strlen(key);
-	head = list;
 	while (itt->next != NULL)
 	{
 		if (ft_strncmp(itt->next->str, str, pos_equal(itt->next->str)) == 0)
@@ -79,36 +76,24 @@ t_env	*ft_set_env(char *key, char *value, t_env *list)
 			join = e_ft_strjoin(str, value);
 			itt->next->str = e_ft_strdup(join);
 			free(join);
-	
 			return (list);
 		}
 		itt = itt->next;
 	}
-
 	itt->next = (t_env*)malloc(sizeof(t_env));
 	join = e_ft_strjoin(str, value);
 	itt->next->str = e_ft_strdup(join);
 	free(join);
 	itt->next->next = NULL;
-	//free(join);
-	//fprintf(stderr, "ft_set_env: %s\n", itt->str);
-	//list->next = (t_env*)e_malloc(sizeof(t_env));
-
-	//list->next = (t_env*)e_malloc(sizeof(t_env));
-	//list->str = ft_strdup(join);
-	//list->next->next = NULL;
-	//list->next = NULL;
-
-	//e_free(join);
-	//e_free(str);
-	//e_free(value);
 	return (list);
 }
+
 int		run_builtin_setenv(t_command *command)
 {
 	char	*result;
 	t_env	*list;
 
-	g_shell.env_list = ft_set_env(command->args->str, command->args->next->str, g_shell.env_list); // freed
+	g_shell.env_list = ft_set_env(command->args->str,
+	command->args->next->str, g_shell.env_list);
 	return (1);
 }

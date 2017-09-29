@@ -12,15 +12,14 @@
 
 #include "../main.h"
 
-void	debug_print_env()
+void	debug_print_env(void)
 {
-	int i;
-	int j;
+	int		i;
+	int		j;
+	t_env	*itt;
 
 	i = 0;
 	j = 0;
-	t_env *itt;
-
 	itt = g_shell.env_list;
 	while (itt)
 	{
@@ -40,16 +39,13 @@ int		get_num_args(char **argv)
 	return (i);
 }
 
-
-
-int	try_cd_path(t_command *command)
+int		try_cd_path(t_command *command)
 {
 	char	*path;
 	char	**path_list;
 	int		i;
 	int		ret;
 	int		found;
-	t_env	*list;
 
 	path = ft_get_env("PATH", g_shell.env_list);
 	if (path == NULL)
@@ -61,11 +57,7 @@ int	try_cd_path(t_command *command)
 	{
 		path_list[i] = ft_strjoin(path_list[i], "/");
 		path_list[i] = ft_strjoin(path_list[i], command->args->str);
-		if ((ret = chdir(path_list[i])))
-		{
-
-		}
-		else
+		if (change_dir(path_list[i]) == 1)
 		{
 			found = 1;
 		}
@@ -74,16 +66,15 @@ int	try_cd_path(t_command *command)
 	return (found);
 }
 
-int change_dir(char *path)
+int		change_dir(char *path)
 {
-	int ret;
-	char *old;
-	char *pwd;
-	t_env *list;
+	int		ret;
+	char	*old;
+	char	*pwd;
+	t_env	*list;
 
 	pwd = ft_strnew(255);
 	pwd = getcwd(pwd, 255);
-
 	if ((ret = chdir(path)))
 		return (0);
 	else
@@ -94,16 +85,17 @@ int change_dir(char *path)
 	}
 }
 
-int	run_builtin_cd(t_command *command)
+int		run_builtin_cd(t_command *command)
 {
-	char *home_path;
-	char *cur_path;
-	char *pwd;
-	t_env *list;
+	char	*home_path;
+	char	*cur_path;
+	char	*pwd;
+	t_env	*list;
 	int		ret;
 
 	home_path = ft_get_env("HOME", g_shell.env_list);
-	if (command->args == NULL || (command->args != NULL && command->args->str[0] == '~'))
+	if (command->args == NULL ||
+	(command->args != NULL && command->args->str[0] == '~'))
 	{
 		if (home_path == NULL)
 			ft_putstr("HOME directory not set and no directory operatives\n");
@@ -112,32 +104,7 @@ int	run_builtin_cd(t_command *command)
 		else
 			return (1);
 	}
-	else if (command->args->str[0] == '-')
-	{
-		cur_path = ft_get_env("OLDPWD", g_shell.env_list);
-		if (change_dir(ft_get_env("OLDPWD", g_shell.env_list)) == 0)
-			ft_putstr("Invalid directory.\n");
-		else
-			return (1);
-	}
-	else if (command->args->str[0] == '/' || command->args->str[0] == '.')
-	{
-		if (change_dir(command->args->str) == 0)
-			ft_putstr("Invalid directory.\n");
-		else
-			return (1);
-	}
-	else if (try_cd_path(command) == 0)
-	{
-			cur_path = ft_strnew(ft_strlen(command->args->str));
-			pwd = ft_strnew(255);
-			pwd = getcwd(pwd, 255);
-			cur_path = ft_strcpy(cur_path, command->args->str);
-			pwd = ft_strjoin(pwd, "/");
-			cur_path = ft_strjoin(pwd, cur_path);
-			debug(cur_path);
-			if (ret = change_dir(cur_path) == 0)
-				ft_putstr("Invalid directory\n");
-	}
-	return (1);
+	else if (args_check(command) == 1)
+		return (1);
+	return(0);
 }
