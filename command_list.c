@@ -43,9 +43,9 @@ int			ft_arr_len(char **argv)
 	return (i);
 }
 
-void	print_command_list(t_command *command_list)
+void		print_command_list(t_command *command_list)
 {
-	int	i;
+	int			i;
 	t_command	*list;
 	t_args		*args;
 
@@ -56,7 +56,7 @@ void	print_command_list(t_command *command_list)
 		debug("--------------------------------------------");
 		i = 0;
 		printf("FILE_NAME: $%s$\n", list->file_name);
-		while(args)
+		while (args)
 		{
 			printf("ARG%d: $%s$\n", i, args->str);
 			args = args->next;
@@ -65,7 +65,7 @@ void	print_command_list(t_command *command_list)
 		printf("TERMINATOR: $%s$\n", list->terminator);
 		printf("NEXT: %p\n", list->next);
 		list = list->next;
-	}	
+	}
 	debug("--------------------------------------------");
 }
 

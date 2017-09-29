@@ -120,7 +120,7 @@ void		run_opps_loop(char **cmds)
 		if (ft_strcmp(list->terminator, "||") == 0)
 		{
 			fprintf(stderr, "EXIT STATUS FROM COMMAND = %d\n", status);
-			if (status == 0);
+			if (status == 0)
 			{
 				if (cmds[i + 1])
 					i++;

@@ -20,13 +20,13 @@ void	input_loop(char **argv)
 	char	**cmd_arr;
 
 	line = NULL;
-	ft_putstr(" WHY U NO SEGFAULT! (ノಠ益ಠ)ノ: ");
+	ft_putstr(" WHYSsasa U NO SEGFAULT! (ノಠ益ಠ)ノ: ");
 	while (get_next_line(0, &line) == 1)
 	{
 		if (line != NULL)
 		{
 			format = format_input_string(line); // busy
-			if (check_semicolon(format) > 0) //checking for a valid semicolon in the string;
+			/*if (check_semicolon(format) > 0) //checking for a valid semicolon in the string;
 			{
 				i = -1;
 				cmd_arr = ft_split_semi(format);
@@ -35,12 +35,13 @@ void	input_loop(char **argv)
 				//free_strsplit(cmd_arr);
 				ft_putstr(" ALL HAIL THE ONE TRUE DEV (ノಠ益ಠ)ノ: ");
 			}
-			else
-			{
+			else*/
+			//{
 				process_input(format);
 				ft_putstr(" WHY U NO SEGFAULT ??? (ノಠ益ಠ)ノ: ");
-			}
+			//}
 		}
+		free(line);
 		free_heap();
 	}
 }

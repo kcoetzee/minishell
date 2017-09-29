@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_semi.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kcoetzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/29 12:23:42 by kcoetzee          #+#    #+#             */
+/*   Updated: 2017/09/29 12:23:43 by kcoetzee         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "main.h"
 
-int 	check_semicolon(const char *line)
+int		check_semicolon(const char *line)
 {
 	int i;
 	int j;
@@ -12,35 +24,30 @@ int 	check_semicolon(const char *line)
 		if (line[i] == '"')
 		{
 			i++;
-			while(line[i] && line[i] != '"')
+			while (line[i] && line[i] != '"')
 			{
 				if (line[i] == '\0')
-				{
-					debug("ERROR: BRACKET INCORRECT FORMAT");
 					exit(1);
-				}
 				i++;
 			}
 		}
-		if(line[i] == ';')
+		if (line[i] == ';')
 			j++;
 		i++;
 	}
 	if (j == 0)
-	{
-		return(-1);
-	}
-	return(j);
+		return (-1);
+	return (j);
 }
 
-int 	pos_next_semi(const char *line, int i)
+int		pos_next_semi(const char *line, int i)
 {
 	while (line[i])
 	{
 		if (line[i] == '"')
 		{
 			i++;
-			while(line[i] && line[i] != '"')
+			while (line[i] && line[i] != '"')
 			{
 				if (line[i] == '\0')
 				{

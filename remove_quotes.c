@@ -30,7 +30,7 @@ char	*remove_quotes(char *str)
 		if (str[i++] == '"')
 			size++;
 	}
-	new_str = (char*)e_malloc(sizeof(char) * (ft_strlen(str) - size));
+	new_str = (ft_strnew(ft_strlen(str) - size));
 	i = 0;
 	j = 0;
 	while (str[i])

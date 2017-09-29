@@ -12,7 +12,7 @@
 
 #include "main.h"
 
-int			check_opp(char *str)
+int		check_opp(char *str)
 {
 	char	**opps;
 	int		i;

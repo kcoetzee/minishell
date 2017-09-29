@@ -72,16 +72,21 @@ void	process_input_loop(t_command *list, t_command *prev, int *ret_status)
 			process_input_child(prev, old_fd, new_fd, list);
 			launch_program(list);
 		}
-		else
+		else if (pid1 < 0)
+		{
+			fprintf(stderr, "%s\n", "SOMETHING FUKED UP");
+		}
+		else{
 			process_input_parent(prev, old_fd, new_fd, list);
+			//close_old_fd(old_fd);
+		}
 		prev = list;
 		list = list->next;
 	}
 	while (pid1 = wait(&status) != -1)
 	{
 		fprintf(stderr, "STATUS OF EXIT [%d]\n", status);
-		*ret_status = status;
-		;
+		//*ret_status = status;
 	}
 }
 
@@ -93,12 +98,12 @@ void	process_input(char *input)
 	int 		status;
 
 	prev = NULL;
-	if (and_or_check(input) == 1)
-		handle_and_or(input);
-	else
-	{
+	/*if (and_or_check(input) == 1)
+		handle_and_or(input);*/
+	//else
+	//{
 		args = ft_strsplit(input, ' ');
 		list = create_command_list(args);
 		process_input_loop(list, prev, &status);
-	}
+	//}
 }

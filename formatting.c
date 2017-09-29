@@ -12,27 +12,24 @@
 
 #include "main.h"
 
-int 	is_opp_str(char *str)
+int		is_opp_str(char *str)
 {
-	int	i;
+	int		i;
 	char	*opps;
 	char	**arr;
 
 	i = 0;
 	if (str == NULL)
-		return(-1);
+		return (-1);
 	opps = ";,>,>>,<";
 	arr = ft_strsplit(opps, ',');
 	while (arr[i] && ft_strcmp(arr[i], str) != 0)
 		i++;
 	if (arr[i] && ft_strcmp(arr[i], str) == 0)
 	{
-		debug("FOUND OPP");
-		free_strsplit(arr);
-		return(i);
+		return (i);
 	}
-	free_strsplit(arr);
-	return(-1);
+	return (-1);
 }
 
 int		is_opp(char c)
@@ -58,8 +55,6 @@ char	*remove_tabs(char *line)
 
 	i = 0;
 	newstr = ft_strnew(sizeof(char));
-
-
 	fprintf(stderr, "------RECIEVING LINE: $%s$\n", line);
 	while (line[i])
 	{
@@ -70,10 +65,8 @@ char	*remove_tabs(char *line)
 			while (line[i] && line[i] == '\t')
 				i++;
 		}
-
 		newstr = ft_addchar(newstr, line[i]);
 		i++;
-	
 	}
 	return (newstr);
 }
@@ -116,7 +109,6 @@ char	*format_input_string(char *line)
 	trimmed = format_opp(line);
 	trimmed = remove_tabs(trimmed);
 	trimmed = ft_strtrim(trimmed);
-
 	newstr = ft_strnew(sizeof(char));
 	while (trimmed[i])
 	{
