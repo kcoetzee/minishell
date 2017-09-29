@@ -46,7 +46,7 @@ void	process_input_parent(t_command *prev, int *old_fd,
 	}
 }
 
-void	process_input_loop(char ***envp, t_command *list, t_command *prev, int *ret_status)
+void	process_input_loop(t_command *list, t_command *prev, int *ret_status)
 {
 	int			pid1;
 	int			new_fd[2];
@@ -56,8 +56,8 @@ void	process_input_loop(char ***envp, t_command *list, t_command *prev, int *ret
 	while (list)
 	{
 		if (is_opp_str(list->terminator) > 0)			//found operator that isnt a pipe FOUND
-			list = handle_opps(list, envp, old_fd);
-		if (try_launch_builtins(list, envp))
+			list = handle_opps(list, old_fd);
+		if (try_launch_builtins(list))
 		{
 			list = list->next;
 			break ;
@@ -70,7 +70,7 @@ void	process_input_loop(char ***envp, t_command *list, t_command *prev, int *ret
 			debug("RUNNING COMMAND");
 			debug(list->file_name);
 			process_input_child(prev, old_fd, new_fd, list);
-			launch_program(list, envp);
+			launch_program(list);
 		}
 		else
 			process_input_parent(prev, old_fd, new_fd, list);
@@ -85,7 +85,7 @@ void	process_input_loop(char ***envp, t_command *list, t_command *prev, int *ret
 	}
 }
 
-void	process_input(char ***envp, char *input)
+void	process_input(char *input)
 {
 	char		**args;
 	t_command	*list;
@@ -94,11 +94,11 @@ void	process_input(char ***envp, char *input)
 
 	prev = NULL;
 	if (and_or_check(input) == 1)
-		handle_and_or(envp, input);
+		handle_and_or(input);
 	else
 	{
 		args = ft_strsplit(input, ' ');
 		list = create_command_list(args);
-		process_input_loop(envp, list, prev, &status);
+		process_input_loop(list, prev, &status);
 	}
 }

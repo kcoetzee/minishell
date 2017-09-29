@@ -1,6 +1,6 @@
 #include "main.h"
 
-t_command	*append_file(t_command *list, char ***envp, int *old_fd)
+t_command	*append_file(t_command *list, int *old_fd)
 {
 	int			new_fd[2];
 	int			status;
@@ -30,7 +30,7 @@ t_command	*append_file(t_command *list, char ***envp, int *old_fd)
 		dup2(new_fd[1], 1); //DUPLICATING STDOUT
 		fprintf(stderr, "OPENING FILE %s INTO FD-> %d\n", file->file_name,new_fd[0]);
 		dup2(new_fd[0], old_fd[0]);
-		launch_program(list, envp);
+		launch_program(list);
 	}
 	else //PARENT process
 	{
@@ -46,7 +46,7 @@ t_command	*append_file(t_command *list, char ***envp, int *old_fd)
 		return(file);
 }
 
-t_command	*write_file(t_command *list, char ***envp, int old_fd[])
+t_command	*write_file(t_command *list, int old_fd[])
 {
 	int			new_fd[2];
 	int			status;
@@ -70,7 +70,7 @@ t_command	*write_file(t_command *list, char ***envp, int old_fd[])
 		dup2(old_fd[0], 0);//DUPLICATING STDIN
 		dup2(new_fd[1], 1);//DUPLICATING STDOUT
 		old_fd[0] = new_fd[0];
-		launch_program(list, envp);
+		launch_program(list);
 	}
 	else //PARENT process
 	{
@@ -85,7 +85,7 @@ t_command	*write_file(t_command *list, char ***envp, int old_fd[])
 		return(file);
 }
 
-t_command	*read_file(t_command *list, char ***envp, int old_fd[])
+t_command	*read_file(t_command *list, int old_fd[])
 {
 	int			new_fd;
 	int			status;
@@ -110,7 +110,7 @@ t_command	*read_file(t_command *list, char ***envp, int old_fd[])
 	list->args = (t_args*)e_malloc(sizeof(t_args));
 	list->args->str = ft_strdup(file->file_name);
 	if((pid = fork()) == 0) //CHILD PROCESS
-		launch_program(list, envp);
+		launch_program(list);
 	else //PARENTS
 	{
 		while((pid = wait(&status)) != -1)
@@ -122,14 +122,14 @@ t_command	*read_file(t_command *list, char ***envp, int old_fd[])
 		return(file);
 }
 
-t_command	*handle_opps(t_command *list, char ***envp, int *old_fd)
+t_command	*handle_opps(t_command *list, int *old_fd)
 {
 	if (ft_strcmp(list->terminator, ">") == 0)
-		list = write_file(list, envp, old_fd);
+		list = write_file(list, old_fd);
 	else if (ft_strcmp(list->terminator, "<") == 0)
-		list = read_file(list, envp, old_fd);
+		list = read_file(list, old_fd);
 	else if (ft_strcmp(list->terminator, ">>") == 0)
-		list = append_file(list, envp, old_fd);
+		list = append_file(list, old_fd);
 	//possible recursion loop for multiple opperators in a sequence
 	//if (is_opp_str(list->terminator))
 	//	handle_opps(l)

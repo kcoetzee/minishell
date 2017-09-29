@@ -12,7 +12,7 @@
 
 #include "main.h"
 
-void	input_loop(char **argv, char **envp)
+void	input_loop(char **argv)
 {
 	int		i;
 	char	*line;
@@ -31,13 +31,13 @@ void	input_loop(char **argv, char **envp)
 				i = -1;
 				cmd_arr = ft_split_semi(format);
 				while (cmd_arr[++i])
-					process_input(&envp, cmd_arr[i]);
-				free_strsplit(cmd_arr);
+					process_input(cmd_arr[i]);
+				//free_strsplit(cmd_arr);
 				ft_putstr(" ALL HAIL THE ONE TRUE DEV (ノಠ益ಠ)ノ: ");
 			}
 			else
 			{
-				process_input(&envp, format);
+				process_input(format);
 				ft_putstr(" WHY U NO SEGFAULT ??? (ノಠ益ಠ)ノ: ");
 			}
 		}
@@ -45,8 +45,14 @@ void	input_loop(char **argv, char **envp)
 	}
 }
 
+void	init_shell(char **envp)
+{
+	g_shell.env_list = ft_create_env_list(envp);	
+}
+
 int		main(int argc, char **argv, char *envp[])
 {
+	init_shell(envp);
 	init_heap();
-	input_loop(argv, envp);
+	input_loop(argv);
 }

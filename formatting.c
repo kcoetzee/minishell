@@ -58,16 +58,22 @@ char	*remove_tabs(char *line)
 
 	i = 0;
 	newstr = ft_strnew(sizeof(char));
+
+
+	fprintf(stderr, "------RECIEVING LINE: $%s$\n", line);
 	while (line[i])
 	{
 		if (line[i] == '\t')
 		{
+			fprintf(stderr, "------FUUUUUUUUuuuE: $%s$\n", line);
 			newstr = ft_addchar(newstr, ' ');
 			while (line[i] && line[i] == '\t')
 				i++;
 		}
+
 		newstr = ft_addchar(newstr, line[i]);
 		i++;
+	
 	}
 	return (newstr);
 }
@@ -105,12 +111,12 @@ char	*format_input_string(char *line)
 	char	*trimmed;
 	char	*newstr;
 
-	return (line);
 	i = 0;
 	trimmed = ft_strnew(sizeof(char));
-	trimmed = remove_tabs(line);
+	trimmed = format_opp(line);
+	trimmed = remove_tabs(trimmed);
 	trimmed = ft_strtrim(trimmed);
-	trimmed = format_opp(trimmed);
+
 	newstr = ft_strnew(sizeof(char));
 	while (trimmed[i])
 	{

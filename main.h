@@ -28,6 +28,12 @@ typedef struct s_opps		t_opps;
 typedef	struct s_args		t_args;
 typedef struct s_heap		t_heap;
 typedef	struct s_env		t_env;
+typedef	struct s_shell		t_shell;
+
+struct 		s_shell
+{
+	t_env	*env_list;
+} g_shell;
 
 struct		s_args
 {
@@ -56,7 +62,7 @@ t_env		*ft_unset_env(char *key, t_env *list);
 t_env		*ft_load_list(char **env);
 t_env		*ft_set_env(char *key, char *value, t_env *list);
 int			get_next_line(const int fd, char **line);
-int 		launch_program(t_command *command, char ***envp);
+int 		launch_program(t_command *command);
 char		*ft_addchar(char *str, char c);
 char		**list_to_arr(t_env *list);
 char		*ft_get_env(char *key, t_env *list);
@@ -65,44 +71,45 @@ t_env		*ft_create_env_list(char **env);
 void		debug_print_env_list(t_env *env);
 char		**env_list_to_arr(t_env *list);
 void		ft_free_list(t_env *list);
+void		init_shell(char **envp);
 
 /*
 ** builtin programs
 */
-int			run_builtin_echo(t_command *command, char **envp);
-int			run_builtin_cd(t_command *command, char ***envp);
-int			run_builtin_setenv(t_command *command, char ***envp);
-int			run_builtin_unsetenv(t_command *command, char ***envp);
-int			run_builtin_env(t_command *command, char **envp);
+int			run_builtin_echo(t_command *command);
+int			run_builtin_cd(t_command *command);
+int			run_builtin_setenv(t_command *command);
+int			run_builtin_unsetenv(t_command *command);
+int			run_builtin_env(t_command *command);
 void		run_builtin_exit(void);
 char		*ft_strtrim_delim(char const *s, char delim);
 char		*remove_quotes(char *str);
-int			try_launch_builtins(t_command *command, char ***envp);
+int			try_launch_builtins(t_command *command);
 /*
 ** printing-utility functions
 */
 void		debug(char *str);
-void		debug_print_env(char **envp);
+void		debug_print_env();
 void		test_memory_manager(void);
+int 		change_dir(char *path);
 
 char		*arg_list_to_line(t_args *list);
 char		**arg_list_to_arr(t_args *list, t_command *cmd_list);
-void		execute_command_pipe(t_command *command, int fd[], char **envp,
-			int state);
-void		execute_command(t_command *command, char **envp);
+void		execute_command_pipe(t_command *command, int fd[], int state);
+void		execute_command(t_command *command);
 
 char		*format_input_string(char *line);
-void		process_input(char ***envp, char *input);
+void		process_input(char *input);
 
 void		print_command_list(t_command *command_list);
 void		destroy_command_list(t_command *list);
 t_command	*create_command_list(char **input);
 t_args		*create_arg_list(char **input, t_command *cur_command, int *index);
 char		**command_to_array(t_command *cmd);
-void		handle_and_or(char ***envp, const char *format);
+void		handle_and_or(const char *format);
 int			and_or_check(const char *str);
 int 		is_opp_str(char *str);
-void		process_input_loop(char ***envp, t_command *list, t_command *prev, int *status);
+void		process_input_loop(t_command *list, t_command *prev, int *status);
 char		**ft_split_semi(const char *line);
 int 		check_semicolon(const char *line);
 /*
@@ -111,6 +118,6 @@ int 		check_semicolon(const char *line);
 
 void		add_to_stack(void *memory);
 void		free_strsplit(char **arr);
-t_command	*handle_opps(t_command *list, char ***envp, int *old_fd);
+t_command	*handle_opps(t_command *list, int *old_fd);
 
 #endif

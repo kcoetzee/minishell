@@ -34,15 +34,15 @@ t_env	*ft_create_env_list(char **env)
 	int		i;
 
 	i = 1;
-	head = (t_env*)e_malloc(sizeof(t_env));
-	head->str = ft_strdup(env[0]);
+	head = (t_env*)malloc(sizeof(t_env));
+	head->str = e_ft_strdup(env[0]);
 	head->next = NULL;
 	itt = head;
 	while (env[i])
 	{
-		itt->next = (t_env*)e_malloc(sizeof(t_env));
+		itt->next = (t_env*)malloc(sizeof(t_env));
 		itt = itt->next;
-		itt->str = ft_strdup(env[i]);
+		itt->str = e_ft_strdup(env[i]);
 		itt->next = NULL;
 		i++;
 	}

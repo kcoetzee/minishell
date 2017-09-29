@@ -78,14 +78,14 @@ char	**ft_split_semi(const char *line)
 	i = 0;
 	j = 0;
 	pos = 0;
-	ret = (char**)malloc(sizeof(char*));
+	ret = (char**)e_malloc(sizeof(char*));
 	while ((pos = pos_next_semi(line, i)) >= 0)
 	{
-		ret[j] = e_ft_strsub(line, i, pos - i);
+		ret[j] = ft_strsub(line, i, pos - i);
 		j++;
 		i = pos + 1;
 	}
-	ret[j] = e_ft_strsub(line, i, ft_strlen(line));
+	ret[j] = ft_strsub(line, i, ft_strlen(line));
 	ret[j + 1] = NULL;
 	return(ret);
 }

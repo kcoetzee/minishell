@@ -20,7 +20,7 @@ char	*ft_get_env(char *key, t_env *list)
 
 	len = ft_strlen(key);
 	head = list;
-	while (list->next)
+	while (list)
 	{
 		if (ft_strncmp(list->str, key, pos_equal(list->str) - 1) == 0)
 		{

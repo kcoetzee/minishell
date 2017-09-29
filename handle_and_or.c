@@ -102,7 +102,7 @@ int		and_or_check(const char *str)
 	return (0);
 }
 
-void		run_opps_loop(char ***envp, char **cmds)
+void		run_opps_loop(char **cmds)
 {
 	int			i;
 	int			pid;
@@ -116,7 +116,7 @@ void		run_opps_loop(char ***envp, char **cmds)
 	{
 		status = 0;
 		list = create_command_list(ft_strsplit(cmds[i], ' '));
-		process_input_loop(envp, list, prev, &status);
+		process_input_loop(list, prev, &status);
 		if (ft_strcmp(list->terminator, "||") == 0)
 		{
 			fprintf(stderr, "EXIT STATUS FROM COMMAND = %d\n", status);
@@ -142,7 +142,7 @@ void		run_opps_loop(char ***envp, char **cmds)
 	}	
 }
 
-void		handle_and_or(char ***envp, const char *format)
+void		handle_and_or(const char *format)
 {
 	int 		i;
 	char		**cmds;
@@ -160,5 +160,5 @@ void		handle_and_or(char ***envp, const char *format)
 		i++;
 	}
 	debug("RUNNING OPPS_LOOP");
-	run_opps_loop(envp, cmds);
+	run_opps_loop(cmds);
 }

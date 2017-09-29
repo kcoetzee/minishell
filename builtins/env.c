@@ -12,8 +12,8 @@
 
 #include "../main.h"
 
-int		run_builtin_env(t_command *command, char **envp)
+int		run_builtin_env(t_command *command)
 {
-	debug_print_env(envp);
+	debug_print_env();
 	return (1);
 }

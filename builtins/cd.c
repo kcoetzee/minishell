@@ -12,23 +12,21 @@
 
 #include "../main.h"
 
-void	debug_print_env(char **envp)
+void	debug_print_env()
 {
 	int i;
 	int j;
 
 	i = 0;
 	j = 0;
-	while (envp[i])
+	t_env *itt;
+
+	itt = g_shell.env_list;
+	while (itt)
 	{
-		j = 0;
-		while (envp[i][j])
-		{
-			ft_putchar(envp[i][j]);
-			j++;
-		}
-		ft_putchar('\n');
-		i++;
+		ft_putstr(itt->str);
+		ft_putstr("\n");
+		itt = itt->next;
 	}
 }
 
@@ -44,48 +42,7 @@ int		get_num_args(char **argv)
 
 
 
-void	change_dir_absolute(char **argv, char **envp)
-{
-	int		ret;
-	char	*path;
-	t_env	*list;
-
-	path = argv[1];
-	list = ft_create_env_list(envp);
-	if (argv[1] == 0)
-	{
-		debug("NO ARGUMENTS");
-		path = ft_get_env("HOME", list);
-		path = ft_strjoin("/", path);
-	}
-	else if (argv[1][0] == '~')
-	{
-		debug("TILDE");
-		path = ft_get_env("HOME", list);
-		path = ft_strjoin("/", path);
-	}
-	else if (argv[1][0] == '-')
-	{
-		debug("BACK");
-		path = ft_get_env("PWD", list);
-		path = ft_strjoin("/", path);
-	}
-	if ((ret = chdir(path)))
-	{
-		ft_putstr("Directory does not exist or insufficient permission.\n");
-	}
-	else if (argv[1] && argv[1][0] == '-')
-	{
-		ft_putstr(path);
-		ft_putchar('\n');
-	}
-}
-
-/*
-** 	after run_builtin function debug("running run_bultin-cd");
-*/
-
-int	try_cd_path(t_command *command, char **envp)
+int	try_cd_path(t_command *command)
 {
 	char	*path;
 	char	**path_list;
@@ -94,8 +51,7 @@ int	try_cd_path(t_command *command, char **envp)
 	int		found;
 	t_env	*list;
 
-	list = ft_create_env_list(envp);
-	path = ft_get_env("PATH", list);
+	path = ft_get_env("PATH", g_shell.env_list);
 	if (path == NULL)
 		return (0);
 	path_list = ft_strsplit(path, ':');
@@ -118,7 +74,27 @@ int	try_cd_path(t_command *command, char **envp)
 	return (found);
 }
 
-int	run_builtin_cd(t_command *command, char ***envp)
+int change_dir(char *path)
+{
+	int ret;
+	char *old;
+	char *pwd;
+	t_env *list;
+
+	pwd = ft_strnew(255);
+	pwd = getcwd(pwd, 255);
+
+	if ((ret = chdir(path)))
+		return (0);
+	else
+	{
+		g_shell.env_list = ft_set_env("OLDPWD", pwd, g_shell.env_list);
+		ft_putstr(path);
+		return (1);
+	}
+}
+
+int	run_builtin_cd(t_command *command)
 {
 	char *home_path;
 	char *cur_path;
@@ -126,21 +102,32 @@ int	run_builtin_cd(t_command *command, char ***envp)
 	t_env *list;
 	int		ret;
 
-	list = ft_create_env_list(*envp);
-	home_path = ft_get_env("HOME", list);
-	if (command->args == NULL)
+	home_path = ft_get_env("HOME", g_shell.env_list);
+	if (command->args == NULL || (command->args != NULL && command->args->str[0] == '~'))
 	{
 		if (home_path == NULL)
 			ft_putstr("HOME directory not set and no directory operatives\n");
-		else if ((ret = chdir(home_path)))
+		else if (change_dir(home_path) == 0)
 			ft_putstr("HOME directory not valid.");
+		else
+			return (1);
+	}
+	else if (command->args->str[0] == '-')
+	{
+		cur_path = ft_get_env("OLDPWD", g_shell.env_list);
+		if (change_dir(ft_get_env("OLDPWD", g_shell.env_list)) == 0)
+			ft_putstr("Invalid directory.\n");
+		else
+			return (1);
 	}
 	else if (command->args->str[0] == '/' || command->args->str[0] == '.')
 	{
-		if ((ret = chdir(command->args->str)))
+		if (change_dir(command->args->str) == 0)
 			ft_putstr("Invalid directory.\n");
+		else
+			return (1);
 	}
-	else if (try_cd_path(command, *envp) == 0)
+	else if (try_cd_path(command) == 0)
 	{
 			cur_path = ft_strnew(ft_strlen(command->args->str));
 			pwd = ft_strnew(255);
@@ -149,7 +136,7 @@ int	run_builtin_cd(t_command *command, char ***envp)
 			pwd = ft_strjoin(pwd, "/");
 			cur_path = ft_strjoin(pwd, cur_path);
 			debug(cur_path);
-			if ((ret = chdir(cur_path)))
+			if (ret = change_dir(cur_path) == 0)
 				ft_putstr("Invalid directory\n");
 	}
 	return (1);

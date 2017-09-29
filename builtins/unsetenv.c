@@ -12,12 +12,6 @@
 
 #include "../main.h"
 
-void		free_env(t_env *env)
-{
-	//e_free(env->str);
-	//e_free(env);
-}
-
 
 t_env		*ft_unset_env(char *key, t_env *list)
 {
@@ -35,7 +29,8 @@ t_env		*ft_unset_env(char *key, t_env *list)
 		{
 			temp = list->next;
 			list->next = list->next->next;
-			//free_env(temp);
+			free(temp->str);
+			free(temp);
 			return (head);
 		}
 		list = list->next;
@@ -43,15 +38,10 @@ t_env		*ft_unset_env(char *key, t_env *list)
 	return (head);
 }
 
-int	run_builtin_unsetenv(t_command *command, char ***envp)
+int	run_builtin_unsetenv(t_command *command)
 {
 	t_env *list;
-	list = ft_create_env_list(*envp);
-	list = ft_unset_env(command->args->str, list);
-	//debug_print_env_list(list);
-	*envp = env_list_to_arr(list);
-
-	//ft_free_list(list);
+	g_shell.env_list = ft_unset_env(command->args->str, g_shell.env_list);
 
 	return (1);
 }
